@@ -7,14 +7,20 @@ spring:
     activate:
       on-profile: local
   datasource:
-    url: jdbc:h2:file:./db/demo
+    url: jdbc:h2:file:./db/demo;SCHEMA=CHALLENGE
     driverClassName: org.h2.Driver
     username: sa
     password: password
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
   jackson:
     default-property-inclusion: non_null
+  h2:
+    console:
+      enabled: true
 
 server:
   port: 8080

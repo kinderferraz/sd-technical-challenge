@@ -36,6 +36,9 @@ outros concordam ou não), mas reconheço que se há possibilidades de expansão
 ### H2
 Visando facilitar a prototipação e testes, optei por um banco H2, instanciado em
 tempo de execução, e usando a lib Spring JPA para interface com o banco.
+O banco H2 é instanciado baseado no modelo implementado em Java, de modo que posso 
+trabalhar numa linguagem familiar, abstraindo os detalhes para a biblioteca e apenas 
+inserindo dados no script [data.sql](../src/main/resources/data.sql) para teste.
 Para cumprir o requisito de persistência entre execuções do protótipo, a base é salva 
 em arquivo, na pasta [db](../db), e na ausência deste, um arquivo novo é criado.
 
