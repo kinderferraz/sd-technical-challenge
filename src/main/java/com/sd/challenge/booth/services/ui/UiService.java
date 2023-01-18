@@ -4,8 +4,9 @@ import com.sd.challenge.booth.data.entities.User;
 import com.sd.challenge.booth.data.repositories.PollRepository;
 import com.sd.challenge.booth.data.repositories.UserRepository;
 import com.sd.challenge.booth.mapper.UiMapper;
+import com.sd.challenge.booth.resources.widgets.Selection;
 import com.sd.challenge.booth.resources.widgets.Element;
-import com.sd.challenge.booth.resources.widgets.Screen;
+import com.sd.challenge.booth.resources.widgets.Form;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-public class ScreenService {
+public class UiService {
 
     @Value("${application.properties.base-url}")
     String baseUrl;
@@ -31,7 +32,7 @@ public class ScreenService {
     UiMapper uiMapper;
 
     @Autowired
-    public ScreenService(
+    public UiService(
             UserRepository userRepository,
             PollRepository pollRepository,
             UiMapper uiMapper
@@ -41,7 +42,7 @@ public class ScreenService {
         this.pollRepository = pollRepository;
     }
 
-    public Screen makeNewPollForm(Map<String, String> data) {
+    public Form makeNewPollForm(Map<String, String> data) {
         Element instructionsText = Element.builder()
                 .id("idt_instructions")
                 .tipo(UIType.TEXT)
@@ -83,16 +84,15 @@ public class ScreenService {
                 .body(data)
                 .build();
 
-        return Screen.builder()
+        return Form.builder()
                 .titulo("Nova votação")
-                .tipo(UIType.FORM)
                 .itens(elements)
                 .botaoCancelar(cancelButton)
                 .botaoOk(acceptButton)
                 .build();
     }
 
-    public Screen makeLoginScreen() {
+    public Form makeLoginScreen() {
         Element cpfInput = Element.builder()
                 .tipo(UIType.TEXT_INPUT)
                 .titulo("CPF")
@@ -104,15 +104,14 @@ public class ScreenService {
                 .url(baseUrl + "/ui/poll-gateway")
                 .build();
 
-        return Screen.builder()
+        return Form.builder()
                 .titulo("Bem vindo")
                 .itens(List.of(cpfInput))
                 .botaoOk(loginButton)
-                .tipo(UIType.FORM)
                 .build();
     }
 
-    public Screen makeGateway(Map<String, String> data) {
+    public Selection makeGateway(Map<String, String> data) {
         User u = userRepository.findUserByCpf(data.get("idtCpfInput"));
         log.info("M=makeGateway user={}", u.getId());
 
@@ -138,9 +137,8 @@ public class ScreenService {
                 .url("/ui/new-poll-form")
                 .build();
 
-        return Screen.builder()
+        return Selection.builder()
                 .titulo("Iniciativas")
-                .tipo(UIType.SELECTION)
                 .itens(List.of(userPolls, openPolls, newPoll))
                 .build();
     }
@@ -153,7 +151,7 @@ public class ScreenService {
         return copy;
     }
 
-    public Screen makeUserPollListing(Map<String, String> data) {
+    public Selection makeUserPollListing(Map<String, String> data) {
         Long userId = Long.parseLong(data.get("userId"));
         User user = userRepository.findUserByIdWithPolls(userId);
 
@@ -161,31 +159,29 @@ public class ScreenService {
                 .map(p -> uiMapper.mapPollToElement(p, data))
                 .collect(Collectors.toList());
 
-        return Screen.builder()
-                .tipo(UIType.SELECTION)
+        return Selection.builder()
                 .titulo("Suas iniciativas")
                 .itens(polls)
                 .build();
     }
 
-    public Screen makeOpenPollListing(Map<String, String> data) {
+    public Selection makeOpenPollListing(Map<String, String> data) {
         List<Element> polls = pollRepository.findAllByEndsAtAfter(LocalDateTime.now())
                 .stream().parallel()
                 .map(p -> uiMapper.mapPollToElement(p, data))
                 .collect(Collectors.toList());
 
-        return Screen.builder()
-                .tipo(UIType.SELECTION)
+        return Selection.builder()
                 .titulo("Iniciativas em aberto")
                 .itens(polls)
                 .build();
     }
 
-    public Screen getPollDetails(Map<String, String> data) {
-        return Screen.builder().build();
+    public Form getPollDetails(Map<String, String> data) {
+        return Form.builder().build();
     }
 
-    public Screen getPollResults(Map<String, String> data) {
+    public Form getPollResults(Map<String, String> data) {
         return null;
     }
 

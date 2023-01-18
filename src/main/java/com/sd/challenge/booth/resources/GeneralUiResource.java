@@ -1,7 +1,8 @@
 package com.sd.challenge.booth.resources;
 
-import com.sd.challenge.booth.resources.widgets.Screen;
-import com.sd.challenge.booth.services.ui.ScreenService;
+import com.sd.challenge.booth.resources.widgets.Form;
+import com.sd.challenge.booth.resources.widgets.Selection;
+import com.sd.challenge.booth.services.ui.UiService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,57 +15,57 @@ import java.util.Map;
 @RequestMapping("/ui")
 public class GeneralUiResource {
 
-    ScreenService screenService;
+    UiService uiService;
 
     @Autowired
-    public GeneralUiResource(ScreenService screenService) {
-        this.screenService = screenService;
+    public GeneralUiResource(UiService uiService) {
+        this.uiService = uiService;
     }
 
     @GetMapping("/login")
-    public ResponseEntity<Screen> getLoginScreen() {
-        return ResponseEntity.ok(screenService.makeLoginScreen());
+    public ResponseEntity<Form> getLoginScreen() {
+        return ResponseEntity.ok(uiService.makeLoginScreen());
     }
 
     @PostMapping("/new-poll-form")
-    public ResponseEntity<Screen> getNewPollForm(
+    public ResponseEntity<Form> getNewPollForm(
             @RequestBody Map<String, String> data
     ) {
-        return ResponseEntity.ok(screenService.makeNewPollForm(data));
+        return ResponseEntity.ok(uiService.makeNewPollForm(data));
     }
 
     @PostMapping("/poll-gateway")
-    public ResponseEntity<Screen> getPollGateway(
+    public ResponseEntity<Selection> getPollGateway(
             @RequestBody Map<String, String> data
     ) {
         data.forEach((key, value) -> log.info("M=getPollGateway k={} v={}", key, value));
-        return ResponseEntity.ok(screenService.makeGateway(data));
+        return ResponseEntity.ok(uiService.makeGateway(data));
     }
 
     @PostMapping("/poll/listing")
-    public ResponseEntity<Screen> getPolls(
+    public ResponseEntity<Selection> getPolls(
             @RequestBody Map<String, String> data
     ) {
         data.forEach((key, value) -> log.info("M=getPollGateway k={} v={}", key, value));
-        Screen sc = data.get("listingOf").equalsIgnoreCase("userPolls")
-                ? screenService.makeUserPollListing(data)
-                : screenService.makeOpenPollListing(data);
+        Selection sc = data.get("listingOf").equalsIgnoreCase("userPolls")
+                ? uiService.makeUserPollListing(data)
+                : uiService.makeOpenPollListing(data);
         return ResponseEntity.ok(sc);
     }
 
     @PostMapping("/poll/details")
-    public ResponseEntity<Screen> getPollDetails(
+    public ResponseEntity<Form> getPollDetails(
             @RequestBody Map<String, String> data
     ) {
         data.forEach((key, value) -> log.info("M=getPollGateway k={} v={}", key, value));
-        return ResponseEntity.ok(screenService.getPollDetails(data));
+        return ResponseEntity.ok(uiService.getPollDetails(data));
     }
 
     @PostMapping("/poll/results")
-    public ResponseEntity<Screen> getPollResults(
+    public ResponseEntity<Form> getPollResults(
             @RequestBody Map<String, String> data
     ) {
         data.forEach((key, value) -> log.info("M=getPollGateway k={} v={}", key, value));
-        return ResponseEntity.ok(screenService.getPollResults(data));
+        return ResponseEntity.ok(uiService.getPollResults(data));
     }
 }
