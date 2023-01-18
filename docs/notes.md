@@ -50,6 +50,17 @@ paralelo, e com versionamento via Flyway.
 
 ## Api
 ### Widgets
+Ao analisar a UI proposta, nota-se um forte acoplamento entre a representação do 
+objeto em tela com a representação do objeto de negócios, além de haver uma forte
+dependência de métodos `POST`. Desta forma, considero que padrão REST não é aplicável 
+(pelo menos não sem um acordo com front-end, o que é fora do escopo deste desafio),
+e optei por isolar os endpoints realcionados a visualização em um recurso próprio `/ui`.
+Por consequência, deixei os recursos específicos dos objetos de
+domínio para chamadas que de fato informam novos dados (nova iniciativa e voto).
+
+A imagem a seguir apresenta, de forma um tanto crua, a jornada de usuario proposta.
+
+![Fluxo de telas proposto](./screen_flow.png)
 
 ### Async
 Visando oferecer uma experiencia aprimorada para o usuario, optei pela implementação de 
