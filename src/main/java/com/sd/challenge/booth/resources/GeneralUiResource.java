@@ -41,4 +41,30 @@ public class GeneralUiResource {
         return ResponseEntity.ok(screenService.makeGateway(data));
     }
 
+    @PostMapping("/poll/listing")
+    public ResponseEntity<Screen> getPolls(
+            @RequestBody Map<String, String> data
+    ) {
+        data.forEach((key, value) -> log.info("M=getPollGateway k={} v={}", key, value));
+        Screen sc = data.get("listingOf").equalsIgnoreCase("userPolls")
+                ? screenService.makeUserPollListing(data)
+                : screenService.makeOpenPollListing(data);
+        return ResponseEntity.ok(sc);
+    }
+
+    @PostMapping("/poll/details")
+    public ResponseEntity<Screen> getPollDetails(
+            @RequestBody Map<String, String> data
+    ) {
+        data.forEach((key, value) -> log.info("M=getPollGateway k={} v={}", key, value));
+        return ResponseEntity.ok(screenService.getPollDetails(data));
+    }
+
+    @PostMapping("/poll/results")
+    public ResponseEntity<Screen> getPollResults(
+            @RequestBody Map<String, String> data
+    ) {
+        data.forEach((key, value) -> log.info("M=getPollGateway k={} v={}", key, value));
+        return ResponseEntity.ok(screenService.getPollResults(data));
+    }
 }
