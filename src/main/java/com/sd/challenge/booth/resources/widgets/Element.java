@@ -4,6 +4,8 @@ import com.sd.challenge.booth.services.ui.UIType;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.Map;
+
 @Data
 @Builder
 public class Element {
@@ -13,4 +15,7 @@ public class Element {
     String titulo;
     String valor;
 
+    String url;
+
+    Map<String, String> body;
 }

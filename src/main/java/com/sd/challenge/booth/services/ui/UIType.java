@@ -2,11 +2,12 @@ package com.sd.challenge.booth.services.ui;
 
 public enum UIType {
 
-    FORMULARIO("FORMULARIO"),
-    TEXTO("TEXTO"),
-    INPUT_TEXTO("INPUT_TEXTO"),
-    INPUT_NUMERO("INPUT_NUMERO"),
-    INPUT_DATA("INPUT_DATA");
+    FORM("FORMULARIO"),
+    SELECTION("SELECAO"),
+    TEXT("TEXTO"),
+    TEXT_INPUT("INPUT_TEXTO"),
+    NUMBER_INPUT("INPUT_NUMERO"),
+    DATE_INPUT("INPUT_DATA");
 
     final String label;
 

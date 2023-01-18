@@ -1,5 +1,6 @@
 package com.sd.challenge.booth.resources.widgets;
 
+import com.sd.challenge.booth.services.ui.UIType;
 import lombok.Builder;
 import lombok.Data;
 
@@ -11,12 +12,12 @@ public class Screen {
 
     String titulo;
 
-    String tipo;
+    UIType tipo;
 
     List<Element> itens;
 
-    Button botaoOk;
+    Element botaoOk;
 
-    Button botaoCancelar;
+    Element botaoCancelar;
 
 }
