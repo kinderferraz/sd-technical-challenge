@@ -2,7 +2,6 @@ package com.sd.challenge.booth.data.entities;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 
@@ -10,7 +9,6 @@ import javax.persistence.*;
 @Table(name = "USER_VOTE")
 @Getter
 @Setter
-@Accessors(fluent = true, chain = true)
 public class UserVote {
 
     @Id

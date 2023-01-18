@@ -1,18 +1,19 @@
 package com.sd.challenge.booth.data.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.Accessors;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "POOL")
+@Table(name = "POLL")
 @Getter
 @Setter
-@Accessors(fluent = true, chain = true)
+@ToString
 public class Poll {
 
     @Id
@@ -23,7 +24,7 @@ public class Poll {
     @Column(name = "DSC_TITLE", nullable = false)
     String title;
 
-    @Column(name = "DSC_PROPSAL", nullable = false)
+    @Column(name = "DSC_PROPOSAL", nullable = false, length = 1000)
     String proposal;
 
     @Column(name = "DAT_CREATED", nullable = false)
@@ -32,10 +33,14 @@ public class Poll {
     @Column(name = "DAT_ENDED", nullable = false)
     LocalDateTime endsAt;
 
-    @ManyToOne
-    @JoinColumn(name = "IDT_OWNER")
+    @JsonIgnore
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "IDT_OWNER", referencedColumnName = "IDT_USER", nullable = false)
     User owner;
 
+    @JsonIgnore
+    @ToString.Exclude
     @OneToMany(mappedBy = "id")
     List<UserVote> pollVotes;
 

@@ -1,17 +1,17 @@
 package com.sd.challenge.booth.data.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.Accessors;
+import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "USERS")
 @Getter
 @Setter
-@Accessors(fluent = true, chain = true)
 public class User {
 
     @Id
@@ -25,9 +25,14 @@ public class User {
     @Column(name = "DSC_NAME", nullable = false)
     String name;
 
+    @JsonIgnore
+    @ToString.Exclude
     @OneToMany(mappedBy = "id")
-    List<Poll> userPolls;
+    Set<Poll> userPolls;
 
+    @JsonIgnore
+    @ToString.Exclude
     @OneToMany(mappedBy = "id")
-    List<UserVote> userVotes;
+    Set<UserVote> userVotes;
+
 }
