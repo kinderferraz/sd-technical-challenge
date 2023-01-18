@@ -11,13 +11,9 @@ import java.util.List;
 public class Screen {
 
     String titulo;
-
     UIType tipo;
-
     List<Element> itens;
-
     Element botaoOk;
-
     Element botaoCancelar;
 
 }

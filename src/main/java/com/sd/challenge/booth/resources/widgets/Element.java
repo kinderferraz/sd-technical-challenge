@@ -14,8 +14,6 @@ public class Element {
     String id;
     String titulo;
     String valor;
-
     String url;
-
     Map<String, String> body;
 }

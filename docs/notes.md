@@ -62,6 +62,15 @@ A imagem a seguir apresenta, de forma um tanto crua, a jornada de usuario propos
 
 ![Fluxo de telas proposto](./screen_flow.png)
 
+Em outra nota de desenvolvimento, conforme implemento elementos de tela, noto uma grande
+duplicação de elementos parecidos, mas nao identico. Fica como objetivo 
+reduzir a duplicação antes da entrega.
+Outro erro notado foi a implementação de uma tela generica, que comporta tanto
+formularios quanto seleções, que apesar de ser interessante a possibilidade de 
+colocar botões de voltar numa seleção, não é previsto no design. Uma segunda meta
+de desenvolvimento é separar estas telas apropriadamente.
+
+
 ### Async
 Visando oferecer uma experiencia aprimorada para o usuario, optei pela implementação de 
 asincronicidade quando possível, fazendo uso da interface _Completable Future_. Além da 
