@@ -56,6 +56,14 @@ public class PollResource {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping()
+    public ResponseEntity<Void> postNewPoll(
+            @RequestBody Object data
+    ) {
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+
     @PostMapping("/{pollId}/vote")
     public ResponseEntity<Void> vote(
             @PathVariable("pollId") Long pollId,
