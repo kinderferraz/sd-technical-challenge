@@ -78,6 +78,12 @@ possiblidade de processar elementos aos poucos e de forma independente,
 esta interface possibilita de isolar o tratamento de exeções em lambdas, 
 de modo que o tratamento fica proximo do elemento que o chama, e não num handler a parte.
 
+### Tratamento de excecões
+Para o tratamento de excecão, pensando em manter uma experiencia de usuario agradável,
+implementarei um tratamento baseado em handlers como propostos pelo framework.
+Faco essa escolha pensando no acoplamento entre as telas e a API, que, na implementacão
+que escolhi, impede a mistura de telas de FORMULÁRIO e SELECÃO.
+
 ## Teste de carga
 
 ****
