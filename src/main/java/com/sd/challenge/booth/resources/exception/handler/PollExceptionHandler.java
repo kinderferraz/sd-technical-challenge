@@ -5,6 +5,7 @@ import com.sd.challenge.booth.resources.widgets.Element;
 import com.sd.challenge.booth.resources.widgets.Form;
 import com.sd.challenge.booth.services.ui.UIType;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -22,7 +23,7 @@ public class PollExceptionHandler {
     @Value("${application.properties.base-url}")
     String baseUrl;
 
-    @ExceptionHandler(value = {PollException.class})
+    @ExceptionHandler(value = {PollException.class, HibernateException.class})
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public Form handlePollException(PollException ex) {
 
@@ -38,7 +39,7 @@ public class PollExceptionHandler {
 
         Element buttonBack = Element.builder()
                 .texto("Voltar ao inicio")
-                .url(baseUrl + "/ui/pollgateway")
+                .url(baseUrl + "/ui/poll-gateway")
                 .body(data)
                 .build();
 
