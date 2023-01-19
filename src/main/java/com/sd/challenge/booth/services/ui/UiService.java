@@ -78,7 +78,7 @@ public class UiService {
 
     public Selection makeOpenPollListing(Map<String, String> data) {
         Stream<Poll> polls = pollRepository
-                .findAllByOpenedAtAfterAndEndsAtBefore(LocalDateTime.now(), LocalDateTime.now())
+                .findAllByOpenedAtBeforeAndEndsAtAfter(LocalDateTime.now(), LocalDateTime.now())
                 .stream();
         return ListingSelection.get(baseUrl, "Iniciativas em aberto", polls, data);
     }

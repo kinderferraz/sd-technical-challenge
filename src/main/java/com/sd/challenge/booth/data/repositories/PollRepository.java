@@ -10,6 +10,6 @@ public interface PollRepository extends CrudRepository<Poll, Long> {
 
     Set<Poll> findAllByEndsAtBefore(LocalDateTime now);
 
-    Set<Poll> findAllByOpenedAtAfterAndEndsAtBefore(LocalDateTime now, LocalDateTime now2);
+    Set<Poll> findAllByOpenedAtBeforeAndEndsAtAfter(LocalDateTime now, LocalDateTime now2);
 
 }
