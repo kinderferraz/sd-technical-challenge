@@ -34,7 +34,7 @@ public class Poll {
     @Column(name = "DAT_ENDED")
     LocalDateTime endsAt;
 
-    @Column(name = "DAT_OPEN")
+    @Column(name = "DAT_OPENED")
     LocalDateTime openedAt;
 
     @JsonIgnore
