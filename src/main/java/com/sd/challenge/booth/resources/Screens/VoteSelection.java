@@ -1,5 +1,6 @@
 package com.sd.challenge.booth.resources.Screens;
 
+import com.sd.challenge.booth.data.entities.Poll;
 import com.sd.challenge.booth.resources.widgets.Element;
 import com.sd.challenge.booth.resources.widgets.Selection;
 
@@ -9,7 +10,7 @@ import java.util.Map;
 
 public class VoteSelection {
 
-    public static Selection get(String baseUrl, Map<String, String> data) {
+    public static Selection get(String baseUrl, Map<String, String> data, Poll poll) {
 
         Map<String, String> acceptData = new HashMap<>(Map.copyOf(data));
         acceptData.put("accept", "true");
@@ -28,7 +29,7 @@ public class VoteSelection {
                 .build();
 
         return Selection.builder()
-                .titulo("Vote iniciativa \"" + data.get("pollName") + "\"")
+                .titulo("Vote iniciativa \"" + poll.getTitle() + "\"")
                 .itens(List.of(acceptVote, denyVote))
                 .build();
     }

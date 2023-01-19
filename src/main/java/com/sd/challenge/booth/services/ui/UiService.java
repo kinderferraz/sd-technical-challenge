@@ -117,7 +117,12 @@ public class UiService {
     }
 
     public Selection getVotingForm(Map<String, String> data) {
-        return VoteSelection.get(baseUrl, data);
+        Long pollId = Long.parseLong(data.get("pollId"));
+
+        Poll poll = pollRepository.findById(pollId)
+                .orElseThrow(() -> makeException("M=getVotingForm", data));
+
+        return VoteSelection.get(baseUrl, data, poll);
     }
 
     public Form getAcceptedForm(Map<String, String> data) {
