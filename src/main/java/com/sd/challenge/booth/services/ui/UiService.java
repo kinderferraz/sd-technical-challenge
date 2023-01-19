@@ -1,22 +1,20 @@
 package com.sd.challenge.booth.services.ui;
 
+import com.sd.challenge.booth.data.entities.Poll;
 import com.sd.challenge.booth.data.entities.User;
 import com.sd.challenge.booth.data.repositories.PollRepository;
 import com.sd.challenge.booth.data.repositories.UserRepository;
-import com.sd.challenge.booth.mapper.UiMapper;
-import com.sd.challenge.booth.resources.widgets.Selection;
-import com.sd.challenge.booth.resources.widgets.Element;
+import com.sd.challenge.booth.resources.Screens.*;
 import com.sd.challenge.booth.resources.widgets.Form;
+import com.sd.challenge.booth.resources.widgets.Selection;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -29,160 +27,62 @@ public class UiService {
 
     UserRepository userRepository;
 
-    UiMapper uiMapper;
 
     @Autowired
     public UiService(
             UserRepository userRepository,
-            PollRepository pollRepository,
-            UiMapper uiMapper
+            PollRepository pollRepository
     ) {
-        this.uiMapper = uiMapper;
         this.userRepository = userRepository;
         this.pollRepository = pollRepository;
     }
 
     public Form makeNewPollForm(Map<String, String> data) {
-        Element instructionsText = Element.builder()
-                .id("idt_instructions")
-                .tipo(UIType.TEXT)
-                .texto("Descreva aqui o objetivo de sua iniciativa e a data de encerramento da votação." +
-                        "Quando finalizar, pressione o botão enviar para abrir a votação")
-                .build();
-
-        Element titleInput = Element.builder()
-                .tipo(UIType.TEXT_INPUT)
-                .id("idt_title")
-                .titulo("Nome da iniciativa")
-                .build();
-
-        Element descriptionInput = Element.builder()
-                .tipo(UIType.TEXT_INPUT)
-                .id("idt_description")
-                .titulo("Descrição da iniciativa")
-                .build();
-
-        Element closingDateInput = Element.builder()
-                .tipo(UIType.DATE_INPUT)
-                .id("idt_closing_date")
-                .titulo("Data de encerramento da votação")
-                .build();
-
-        List<Element> elements = List.of(
-                instructionsText, titleInput,
-                closingDateInput, descriptionInput
-        );
-
-        Element acceptButton = Element.builder()
-                .texto("Enviar iniciativa")
-                .url(baseUrl + "/")
-                .body(data)
-                .build();
-        Element cancelButton = Element.builder()
-                .texto("Cancelar")
-                .url(baseUrl + "/ui/poll-gateway")
-                .body(data)
-                .build();
-
-        return Form.builder()
-                .titulo("Nova votação")
-                .itens(elements)
-                .botaoCancelar(cancelButton)
-                .botaoOk(acceptButton)
-                .build();
+        return NewPollForm.get(baseUrl, data);
     }
 
     public Form makeLoginScreen() {
-        Element cpfInput = Element.builder()
-                .tipo(UIType.TEXT_INPUT)
-                .titulo("CPF")
-                .id("idt_cpf_input")
-                .build();
-
-        Element loginButton = Element.builder()
-                .texto("Login")
-                .url(baseUrl + "/ui/poll-gateway")
-                .build();
-
-        return Form.builder()
-                .titulo("Bem vindo")
-                .itens(List.of(cpfInput))
-                .botaoOk(loginButton)
-                .build();
+        return LoginForm.get(baseUrl);
     }
 
     public Selection makeGateway(Map<String, String> data) {
         User u = userRepository.findUserByCpf(data.get("idtCpfInput"));
         log.info("M=makeGateway user={}", u.getId());
 
-        data.put("idt_user", u.getId().toString());
+        data.put("userId", u.getId().toString());
         data.remove("idtCpfInput");
+        data.remove("listingOf");
 
-        Element userPolls = Element.builder()
-                .id("idt_user_polls")
-                .texto("Suas iniciativas")
-                .url("/ui/polls/listing")
-                .body(copyAndAdd(data, Map.of("listingOf", "userPolls")))
-                .build();
-        Element openPolls = Element.builder()
-                .texto("Iniciativas em aberto")
-                .url("/ui/polls/listing")
-                .id("idt_open_polls")
-                .body(copyAndAdd(data, Map.of("listingOf", "openPolls")))
-                .build();
-        Element newPoll = Element.builder()
-                .texto("Propor iniciativa")
-                .id("idt_new_poll")
-                .body(data)
-                .url("/ui/new-poll-form")
-                .build();
-
-        return Selection.builder()
-                .titulo("Iniciativas")
-                .itens(List.of(userPolls, openPolls, newPoll))
-                .build();
-    }
-
-    private Map<String, String> copyAndAdd(
-            Map<String, String> data, Map<String, String> other
-    ) {
-        Map<String, String> copy = new HashMap<>(Map.copyOf(data));
-        copy.putAll(other);
-        return copy;
+        return PollGatewaySelection.get(baseUrl, data);
     }
 
     public Selection makeUserPollListing(Map<String, String> data) {
         Long userId = Long.parseLong(data.get("userId"));
         User user = userRepository.findUserByIdWithPolls(userId);
 
-        List<Element> polls = user.getUserPolls().stream().parallel()
-                .map(p -> uiMapper.mapPollToElement(p, data))
-                .collect(Collectors.toList());
+        Stream<Poll> polls = user.getUserPolls().stream().parallel();
 
-        return Selection.builder()
-                .titulo("Suas iniciativas")
-                .itens(polls)
-                .build();
+        return ListingSelection.get(baseUrl, "Suas iniciativas", polls, data);
     }
 
     public Selection makeOpenPollListing(Map<String, String> data) {
-        List<Element> polls = pollRepository.findAllByEndsAtAfter(LocalDateTime.now())
-                .stream().parallel()
-                .map(p -> uiMapper.mapPollToElement(p, data))
-                .collect(Collectors.toList());
-
-        return Selection.builder()
-                .titulo("Iniciativas em aberto")
-                .itens(polls)
-                .build();
+        Stream<Poll> polls = pollRepository.findAllByEndsAtAfter(LocalDateTime.now())
+                .stream();
+        return ListingSelection.get(baseUrl, "Iniciativas em aberto", polls, data);
     }
 
     public Form getPollDetails(Map<String, String> data) {
-        return Form.builder().build();
+        Poll poll = pollRepository.findById(Long.valueOf(data.get("pollId")))
+                .orElseThrow();
+        return PollDetailsForm.get(poll, data);
     }
 
     public Form getPollResults(Map<String, String> data) {
-        return null;
+        Long id = Long.parseLong(data.get("pollId"));
+        Poll poll = pollRepository.findByIdAndEndsAtBefore(id, LocalDateTime.now())
+                .orElseThrow();
+
+        return PollResultsForm.get(poll, data);
     }
 
 }
