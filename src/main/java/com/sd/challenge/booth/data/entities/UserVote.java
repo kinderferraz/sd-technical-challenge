@@ -19,7 +19,7 @@ public class UserVote {
     Long id;
 
     @Column(name = "FLG_ACCEPTED", length = 1, nullable = false)
-    boolean name;
+    boolean vote;
 
     @ManyToOne
     @JoinColumn(name = "IDT_USER")

@@ -9,8 +9,6 @@ public interface UserRepository extends CrudRepository<User, Long> {
     @Query("select u from User u join fetch u.userPolls where u.id = (:userId)")
     User findUserByIdWithPolls(Long userId);
 
-    User findUserById(Long userId);
-
     User findUserByCpf(String idtCpfInput);
 
 }
