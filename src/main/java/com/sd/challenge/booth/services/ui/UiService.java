@@ -5,11 +5,12 @@ import com.sd.challenge.booth.data.entities.User;
 import com.sd.challenge.booth.data.entities.UserVote;
 import com.sd.challenge.booth.data.repositories.PollRepository;
 import com.sd.challenge.booth.data.repositories.UserRepository;
-import com.sd.challenge.booth.data.repositories.UserVoteRepostory;
+import com.sd.challenge.booth.data.repositories.UserVoteRepository;
 import com.sd.challenge.booth.resources.Screens.*;
 import com.sd.challenge.booth.resources.exception.PollException;
 import com.sd.challenge.booth.resources.widgets.Form;
 import com.sd.challenge.booth.resources.widgets.Selection;
+import com.sd.challenge.booth.services.integration.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,15 +31,18 @@ public class UiService {
 
     UserRepository userRepository;
 
-    UserVoteRepostory userVoteRepostory;
+    UserVoteRepository userVoteRepostory;
 
+    UserService userService;
 
     @Autowired
     public UiService(
+            UserService userService,
             UserRepository userRepository,
             PollRepository pollRepository,
-            UserVoteRepostory userVoteRepostory
+            UserVoteRepository userVoteRepostory
     ) {
+        this.userService = userService;
         this.userVoteRepostory = userVoteRepostory;
         this.userRepository = userRepository;
         this.pollRepository = pollRepository;
@@ -85,16 +89,19 @@ public class UiService {
     }
 
     public Form getPollDetails(Map<String, String> data) {
-        Poll poll = pollRepository.findById(Long.valueOf(data.get("pollId")))
+        Long userId = Long.valueOf(data.get("userId"));
+        Long pollId = Long.valueOf(data.get("pollId"));
+
+        Boolean userMayVote = userService.userMayVote(userId);
+        UserVote vote = userVoteRepostory.findUserVoteByPollAndVoter(pollId, userId);
+
+        Poll poll = pollRepository.findById(pollId)
                 .orElseThrow(() -> PollException.builder()
                         .message("M=getPollDetails error getting poll")
                         .data(data)
                         .build());
 
-        UserVote vote = userVoteRepostory
-                .findUserVoteByPollAndVoter(poll.getId(), Long.valueOf(data.get("userId")));
-
-        return PollDetailsForm.get(poll, vote, data, null);
+        return PollDetailsForm.get(poll, vote, data, userMayVote);
     }
 
     public Form getPollResults(Map<String, String> data) {

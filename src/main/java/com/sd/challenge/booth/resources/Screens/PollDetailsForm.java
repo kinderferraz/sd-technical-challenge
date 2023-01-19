@@ -39,9 +39,7 @@ public class PollDetailsForm {
 
         Element voteStatus = Element.builder()
                 .tipo(UIType.TEXT)
-                .texto(vote == null
-                        ? "Você ainda nao votou nesta iniciativa"
-                        : "Você já votou nesta iniciativa")
+                .texto(voteStatus(vote, cpfValidation))
                 .build();
 
 
@@ -63,6 +61,16 @@ public class PollDetailsForm {
                 .botaoCancelar(buttonBack)
                 .botaoOk(userMayVote(poll, vote, cpfValidation) ? buttonVote : null)
                 .build();
+    }
+
+    private static String voteStatus(UserVote vote, Boolean cpfValidation) {
+        if (cpfValidation.equals(Boolean.FALSE) && vote == null)
+            return "Você não pode votar nesta iniciativa";
+
+        if(cpfValidation.equals(Boolean.TRUE) && vote == null)
+            return "Você ainda não votou nesta iniciativa";
+
+        return "Você já votou nesta iniciativa";
     }
 
     private static boolean userMayVote(Poll poll, UserVote vote, Boolean cpfValidation) {
