@@ -6,6 +6,7 @@ import com.sd.challenge.booth.data.repositories.PollRepository;
 import com.sd.challenge.booth.data.repositories.UserRepository;
 import com.sd.challenge.booth.resources.Screens.*;
 import com.sd.challenge.booth.resources.widgets.Form;
+import com.sd.challenge.booth.resources.exception.PollException;
 import com.sd.challenge.booth.resources.widgets.Selection;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,14 +74,20 @@ public class UiService {
 
     public Form getPollDetails(Map<String, String> data) {
         Poll poll = pollRepository.findById(Long.valueOf(data.get("pollId")))
-                .orElseThrow();
+                .orElseThrow(() -> PollException.builder()
+                        .message("M=getPollDetails error getting poll")
+                        .data(data)
+                        .build());
         return PollDetailsForm.get(poll, data);
     }
 
     public Form getPollResults(Map<String, String> data) {
         Long id = Long.parseLong(data.get("pollId"));
         Poll poll = pollRepository.findByIdAndEndsAtBefore(id, LocalDateTime.now())
-                .orElseThrow();
+                .orElseThrow(() -> PollException.builder()
+                        .message("M=getPollResults error getting poll")
+                        .data(data)
+                        .build());
 
         return PollResultsForm.get(poll, data);
     }
