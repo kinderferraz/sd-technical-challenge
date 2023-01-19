@@ -31,8 +31,11 @@ public class Poll {
     @Column(name = "DAT_CREATED", nullable = false)
     LocalDateTime createdAt;
 
-    @Column(name = "DAT_ENDED", nullable = false)
+    @Column(name = "DAT_ENDED")
     LocalDateTime endsAt;
+
+    @Column(name = "DAT_OPEN")
+    LocalDateTime openedAt;
 
     @JsonIgnore
     @ToString.Exclude
