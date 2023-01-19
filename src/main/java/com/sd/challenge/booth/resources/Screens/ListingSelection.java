@@ -26,8 +26,7 @@ public class ListingSelection {
         if (items.isEmpty()) {
             items.add(Element.builder()
                     .tipo(UIType.TEXT)
-                            .texto("Você ainda não tem iniciativas abertas. " +
-                                    "Pode criar acessando o formulário \"Propor Iniciativa\"")
+                    .texto("Sentimos muito, não há dados.")
                     .build());
         }
 

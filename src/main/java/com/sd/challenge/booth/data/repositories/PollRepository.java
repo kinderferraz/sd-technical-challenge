@@ -14,6 +14,6 @@ public interface PollRepository extends CrudRepository<Poll, Long> {
 
     Set<Poll> findAllByEndsAtBefore(LocalDateTime now);
 
-    @Query("select p from Poll p join fetch UserVote where p.id = (:id) and p.endsAt < CURRENT DATE ")
+    @Query("select p from Poll p join fetch UserVote where p.id = (:id) and p.endsAt < (:now) ")
     Optional<Poll> findByIdAndEndsAtBeforeWithVotes(Long id, LocalDateTime now);
 }

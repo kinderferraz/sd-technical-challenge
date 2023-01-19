@@ -9,11 +9,10 @@ import java.util.Map;
 @Data
 @Builder
 @EqualsAndHashCode(callSuper = true)
-public class PollException extends RuntimeException{
+public class PollException extends RuntimeException {
 
     String message;
     Throwable cause;
     Map<String, String> data;
-
 
 }

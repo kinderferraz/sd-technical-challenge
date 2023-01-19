@@ -4,6 +4,7 @@ import com.sd.challenge.booth.resources.exception.PollException;
 import com.sd.challenge.booth.resources.widgets.Element;
 import com.sd.challenge.booth.resources.widgets.Form;
 import com.sd.challenge.booth.services.ui.UIType;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RestControllerAdvice
 public class PollExceptionHandler {
 
@@ -23,6 +25,8 @@ public class PollExceptionHandler {
     @ExceptionHandler(value = {PollException.class})
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public Form handlePollException(PollException ex) {
+
+        log.warn("M=handlePollException ex={}", ex.getMessage());
 
         Map<String, String> data = new HashMap<>();
         data.put("userId", ex.getData().get("userId"));
@@ -44,4 +48,5 @@ public class PollExceptionHandler {
                 .botaoOk(buttonBack)
                 .build();
     }
+
 }
