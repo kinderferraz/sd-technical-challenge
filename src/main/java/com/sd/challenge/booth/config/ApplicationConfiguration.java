@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
-@EnableFeignClients
+@EnableFeignClients(basePackages = {"com.sd.challenge.booth.integration"})
 @EnableJpaRepositories(basePackages = {"com.sd.challenge.booth.data"})
 public class ApplicationConfiguration {
 
