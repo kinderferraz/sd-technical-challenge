@@ -61,6 +61,13 @@ public class GeneralUiResource {
         return ResponseEntity.ok(uiService.getPollDetails(data));
     }
 
+    @PostMapping("/poll/vote")
+    public ResponseEntity<Selection> getVotingSelection(
+            @RequestBody Map<String, String> data
+    ) {
+        return ResponseEntity.ok(uiService.getVotingForm(data));
+    }
+
     @PostMapping("/poll/results")
     public ResponseEntity<Form> getPollResults(
             @RequestBody Map<String, String> data

@@ -85,4 +85,7 @@ public class UiService {
         return PollResultsForm.get(poll, data);
     }
 
+    public Selection getVotingForm(Map<String, String> data) {
+        return VoteSelection.get(baseUrl, data);
+    }
 }
