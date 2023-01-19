@@ -45,26 +45,49 @@ public class GeneralUiResource {
         return ResponseEntity.ok(uiService.makeGateway(data));
     }
 
-    @PostMapping("/poll/listing")
-    public ResponseEntity<Selection> getPolls(
+    @PostMapping("/poll/listing/open")
+    public ResponseEntity<Selection> getOpenPolls(
             @RequestBody Map<String, String> data
     ) {
-        log.info("M=getPolls data={}", data.toString());
+        log.info("M=getOpenPoll sdata={}", data.toString());
 
-        if (data.get("listingOf").equalsIgnoreCase("userPolls"))
-            return ResponseEntity.ok(uiService.makeUserPollListing(data));
-
-        if (data.get("listingOf").equalsIgnoreCase("openPolls"))
-            return ResponseEntity.ok(uiService.makeOpenPollListing(data));
-
-
-        if (data.get("listingOf").equalsIgnoreCase("openPolls"))
-            return ResponseEntity.ok(uiService.makeClosedPollListing(data));
-
-        throw PollException.builder()
+        if (! data.get("listingOf").equalsIgnoreCase("openPolls"))
+            throw PollException.builder()
                 .message("gateway: route not found")
                 .data(data).build();
+
+        return ResponseEntity.ok(uiService.makeOpenPollListing(data));
+
     }
+
+    @PostMapping("/poll/listing/closed")
+    public ResponseEntity<Selection> getClosedPolls(
+            @RequestBody Map<String, String> data
+    ) {
+        log.info("M=getClosedPolls data={}", data.toString());
+
+        if (!data.get("listingOf").equalsIgnoreCase("closedPolls"))
+            throw PollException.builder()
+                    .message("gateway: route not found")
+                    .data(data).build();
+
+        return ResponseEntity.ok(uiService.makeClosedPollListing(data));
+    }
+
+    @PostMapping("/poll/listing/user")
+    public ResponseEntity<Selection> getUserPolls(
+            @RequestBody Map<String, String> data
+    ) {
+        log.info("M=getUserPolls data={}", data.toString());
+
+        if (data.get("listingOf").equalsIgnoreCase("userPolls"))
+            throw PollException.builder()
+                    .message("gateway: route not found")
+                    .data(data).build();
+
+        return ResponseEntity.ok(uiService.makeUserPollListing(data));
+    }
+
 
     @PostMapping("/poll/details")
     public ResponseEntity<Form> getPollDetails(
