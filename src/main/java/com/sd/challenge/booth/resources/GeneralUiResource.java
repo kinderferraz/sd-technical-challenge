@@ -25,6 +25,7 @@ public class GeneralUiResource {
 
     @GetMapping("/login")
     public ResponseEntity<Form> getLoginScreen() {
+        log.info("M=getLoginScreen");
         return ResponseEntity.ok(uiService.makeLoginScreen());
     }
 
@@ -32,6 +33,7 @@ public class GeneralUiResource {
     public ResponseEntity<Form> getNewPollForm(
             @RequestBody Map<String, String> data
     ) {
+        log.info("M=getNewPollForm data={}", data.toString());
         return ResponseEntity.ok(uiService.makeNewPollForm(data));
     }
 
@@ -39,7 +41,7 @@ public class GeneralUiResource {
     public ResponseEntity<Selection> getPollGateway(
             @RequestBody Map<String, String> data
     ) {
-        data.forEach((key, value) -> log.info("M=getPollGateway k={} v={}", key, value));
+        log.info("M=getPollGateway data={}", data.toString());
         return ResponseEntity.ok(uiService.makeGateway(data));
     }
 
@@ -47,15 +49,16 @@ public class GeneralUiResource {
     public ResponseEntity<Selection> getPolls(
             @RequestBody Map<String, String> data
     ) {
-        data.forEach((key, value) -> log.info("M=getPollGateway k={} v={}", key, value));
+        log.info("M=getPolls data={}", data.toString());
 
         if (data.get("listingOf").equalsIgnoreCase("userPolls"))
             return ResponseEntity.ok(uiService.makeUserPollListing(data));
 
-        if(data.get("listingOf").equalsIgnoreCase("openPolls"))
-           return ResponseEntity.ok(uiService.makeOpenPollListing(data));
+        if (data.get("listingOf").equalsIgnoreCase("openPolls"))
+            return ResponseEntity.ok(uiService.makeOpenPollListing(data));
 
-        if(data.get("listingOf").equalsIgnoreCase("openPolls"))
+
+        if (data.get("listingOf").equalsIgnoreCase("openPolls"))
             return ResponseEntity.ok(uiService.makeClosedPollListing(data));
 
         throw PollException.builder()
@@ -67,7 +70,7 @@ public class GeneralUiResource {
     public ResponseEntity<Form> getPollDetails(
             @RequestBody Map<String, String> data
     ) {
-        data.forEach((key, value) -> log.info("M=getPollGateway k={} v={}", key, value));
+        log.info("M=getPollDetails data={}", data.toString());
         return ResponseEntity.ok(uiService.getPollDetails(data));
     }
 
@@ -75,6 +78,7 @@ public class GeneralUiResource {
     public ResponseEntity<Selection> getVotingSelection(
             @RequestBody Map<String, String> data
     ) {
+        log.info("M=getVotingSelection data={}", data.toString());
         return ResponseEntity.ok(uiService.getVotingForm(data));
     }
 
@@ -82,7 +86,7 @@ public class GeneralUiResource {
     public ResponseEntity<Form> getPollResults(
             @RequestBody Map<String, String> data
     ) {
-        data.forEach((key, value) -> log.info("M=getPollGateway k={} v={}", key, value));
+        log.info("M=getPollResults data={}", data.toString());
         return ResponseEntity.ok(uiService.getPollResults(data));
     }
 }
