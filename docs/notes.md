@@ -72,11 +72,16 @@ de desenvolvimento é separar estas telas apropriadamente.
 
 
 ### Async
-Visando oferecer uma experiencia aprimorada para o usuario, optei pela implementação de 
+Visando oferecer uma experiencia aprimorada para o usuario, o ideal seria uma implementação de 
 asincronicidade quando possível, fazendo uso da interface _Completable Future_. Além da 
 possiblidade de processar elementos aos poucos e de forma independente,
 esta interface possibilita de isolar o tratamento de exeções em lambdas, 
 de modo que o tratamento fica proximo do elemento que o chama, e não num handler a parte.
+
+Entretanto, dado o acoplamento com elementos de UI na solucão proposta, optei por não usar esta
+alternativa, uma vez que o mapeamento de telas está atrelado a informacões de estado dos componentes de
+negócio. Reconheco o custo de performance nesta solucão, seria necessário um acordo mais elaborado 
+com o front.
 
 ### Tratamento de excecões
 Para o tratamento de excecão, pensando em manter uma experiencia de usuario agradável,
