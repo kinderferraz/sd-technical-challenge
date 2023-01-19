@@ -51,10 +51,10 @@ public class GeneralUiResource {
     ) {
         log.info("M=getOpenPoll data={}", data.toString());
 
-        if (! data.get("listingOf").equalsIgnoreCase("open"))
+        if (!data.get("listingOf").equalsIgnoreCase("open"))
             throw PollException.builder()
-                .message("gateway: route not found")
-                .data(data).build();
+                    .message("gateway: route not found")
+                    .data(data).build();
 
         return ResponseEntity.ok(uiService.makeOpenPollListing(data));
 
@@ -80,7 +80,7 @@ public class GeneralUiResource {
     ) {
         log.info("M=getUserPolls data={}", data.toString());
 
-        if (data.get("listingOf").equalsIgnoreCase("user"))
+        if (!data.get("listingOf").equalsIgnoreCase("user"))
             throw PollException.builder()
                     .message("gateway: route not found")
                     .data(data).build();
