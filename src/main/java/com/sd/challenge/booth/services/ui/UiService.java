@@ -97,10 +97,7 @@ public class UiService {
         UserVote vote = userVoteRepostory.findUserVoteByPollAndVoter(pollId, userId);
 
         Poll poll = pollRepository.findById(pollId)
-                .orElseThrow(() -> PollException.builder()
-                        .message("M=getPollDetails error getting poll")
-                        .data(data)
-                        .build());
+                .orElseThrow(() -> makeException("M=getPollDetails", data));
 
         return PollDetailsForm.get(poll, vote, data, userMayVote, baseUrl);
     }
@@ -108,10 +105,7 @@ public class UiService {
     public Form getPollResults(Map<String, String> data) {
         Long id = Long.parseLong(data.get("pollId"));
         Poll poll = pollRepository.findById(id)
-                .orElseThrow(() -> PollException.builder()
-                        .message("M=getPollResults error getting poll")
-                        .data(data)
-                        .build());
+                .orElseThrow(() -> makeException("M=getPollResults", data));
 
         return PollResultsForm.get(poll, baseUrl, data);
     }
@@ -127,6 +121,13 @@ public class UiService {
 
     public Form getAcceptedForm(Map<String, String> data) {
         return AcceptedForm.get(baseUrl, data);
+    }
+
+    private PollException makeException(String method, Map<String, String> data) {
+        return PollException.builder()
+                .message(method + " error getting poll")
+                .data(data)
+                .build();
     }
 
 }
