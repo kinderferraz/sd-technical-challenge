@@ -23,7 +23,6 @@ public class VoteSelection {
         denyData.put("accept", "false");
         Element denyVote = Element.builder()
                 .texto("Não")
-                .body(data)
                 .body(denyData)
                 .url(baseUrl + "/poll/vote")
                 .build();
