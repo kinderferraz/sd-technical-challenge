@@ -1,5 +1,6 @@
 package com.sd.challenge.booth.resources;
 
+import com.sd.challenge.booth.resources.exception.PollException;
 import com.sd.challenge.booth.resources.widgets.Form;
 import com.sd.challenge.booth.resources.widgets.Selection;
 import com.sd.challenge.booth.services.ui.UiService;
@@ -47,10 +48,19 @@ public class GeneralUiResource {
             @RequestBody Map<String, String> data
     ) {
         data.forEach((key, value) -> log.info("M=getPollGateway k={} v={}", key, value));
-        Selection sc = data.get("listingOf").equalsIgnoreCase("userPolls")
-                ? uiService.makeUserPollListing(data)
-                : uiService.makeOpenPollListing(data);
-        return ResponseEntity.ok(sc);
+
+        if (data.get("listingOf").equalsIgnoreCase("userPolls"))
+            return ResponseEntity.ok(uiService.makeUserPollListing(data));
+
+        if(data.get("listingOf").equalsIgnoreCase("openPolls"))
+           return ResponseEntity.ok(uiService.makeOpenPollListing(data));
+
+        if(data.get("listingOf").equalsIgnoreCase("openPolls"))
+            return ResponseEntity.ok(uiService.makeClosedPollListing(data));
+
+        throw PollException.builder()
+                .message("gateway: route not found")
+                .data(data).build();
     }
 
     @PostMapping("/poll/details")

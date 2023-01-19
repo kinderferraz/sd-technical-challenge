@@ -78,6 +78,12 @@ public class UiService {
         return ListingSelection.get(baseUrl, "Iniciativas em aberto", polls, data);
     }
 
+    public Selection makeClosedPollListing(Map<String, String> data) {
+        Stream<Poll> polls = pollRepository.findAllByEndsAtBefore(LocalDateTime.now())
+                .stream();
+        return ListingSelection.get(baseUrl, "Iniciativas finalizadas", polls, data);
+    }
+
     public Form getPollDetails(Map<String, String> data) {
         Poll poll = pollRepository.findById(Long.valueOf(data.get("pollId")))
                 .orElseThrow(() -> PollException.builder()
@@ -93,13 +99,13 @@ public class UiService {
 
     public Form getPollResults(Map<String, String> data) {
         Long id = Long.parseLong(data.get("pollId"));
-        Poll poll = pollRepository.findByIdAndEndsAtBefore(id, LocalDateTime.now())
+        Poll poll = pollRepository.findByIdAndEndsAtBeforeWithVotes(id, LocalDateTime.now())
                 .orElseThrow(() -> PollException.builder()
                         .message("M=getPollResults error getting poll")
                         .data(data)
                         .build());
 
-        return PollResultsForm.get(poll, data);
+        return PollResultsForm.get(poll, baseUrl, data);
     }
 
     public Selection getVotingForm(Map<String, String> data) {
