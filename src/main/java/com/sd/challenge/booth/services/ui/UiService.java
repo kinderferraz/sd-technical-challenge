@@ -102,7 +102,7 @@ public class UiService {
                         .data(data)
                         .build());
 
-        return PollDetailsForm.get(poll, vote, data, userMayVote);
+        return PollDetailsForm.get(poll, vote, data, userMayVote, baseUrl);
     }
 
     public Form getPollResults(Map<String, String> data) {
