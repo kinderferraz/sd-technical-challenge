@@ -10,10 +10,11 @@ import java.util.Set;
 
 public interface PollRepository extends CrudRepository<Poll, Long> {
 
-    Set<Poll> findAllByEndsAtAfter(LocalDateTime now);
-
     Set<Poll> findAllByEndsAtBefore(LocalDateTime now);
 
     @Query("select p from Poll p join fetch UserVote where p.id = (:id) and p.endsAt < (:now) ")
     Optional<Poll> findByIdAndEndsAtBeforeWithVotes(Long id, LocalDateTime now);
+
+    Set<Poll> findAllByOpenedAtAfterAndEndsAtBefore(LocalDateTime now, LocalDateTime now2);
+
 }

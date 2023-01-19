@@ -40,10 +40,10 @@ public class UiService {
             UserService userService,
             UserRepository userRepository,
             PollRepository pollRepository,
-            UserVoteRepository userVoteRepostory
+            UserVoteRepository userVoteRepository
     ) {
         this.userService = userService;
-        this.userVoteRepostory = userVoteRepostory;
+        this.userVoteRepostory = userVoteRepository;
         this.userRepository = userRepository;
         this.pollRepository = pollRepository;
     }
@@ -77,7 +77,8 @@ public class UiService {
     }
 
     public Selection makeOpenPollListing(Map<String, String> data) {
-        Stream<Poll> polls = pollRepository.findAllByEndsAtAfter(LocalDateTime.now())
+        Stream<Poll> polls = pollRepository
+                .findAllByOpenedAtAfterAndEndsAtBefore(LocalDateTime.now(), LocalDateTime.now())
                 .stream();
         return ListingSelection.get(baseUrl, "Iniciativas em aberto", polls, data);
     }
