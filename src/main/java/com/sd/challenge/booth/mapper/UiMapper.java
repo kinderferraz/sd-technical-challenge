@@ -10,10 +10,13 @@ import java.util.Map;
 public class UiMapper {
 
     public Element mapPollToElement(Poll poll, String baseUrl, Map<String, String> data) {
+        Map<String, String> body = new HashMap<>(Map.copyOf(data));
+        body.put("pollId", poll.getId().toString());
+
         return Element.builder()
                 .titulo(poll.getTitle())
-                .url(baseUrl + "ui/polls/details")
-                .body(data)
+                .url(baseUrl + "/ui/polls/details")
+                .body(body)
                 .build();
     }
 
