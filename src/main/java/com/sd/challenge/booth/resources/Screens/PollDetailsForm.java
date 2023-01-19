@@ -30,7 +30,7 @@ public class PollDetailsForm {
 
         Element createdAt = Element.builder()
                 .tipo(UIType.TEXT)
-                .titulo("Aberta em: ")
+                .titulo("Criada em: ")
                 .valor(poll.getCreatedAt().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))
                 .build();
 
