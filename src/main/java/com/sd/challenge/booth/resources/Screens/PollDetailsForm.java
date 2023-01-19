@@ -41,9 +41,10 @@ public class PollDetailsForm {
                 .texto(voteStatus(vote, cpfValidation))
                 .build();
 
+        String listing = data.get("listingOf");
         Element buttonBack = Element.builder()
                 .texto("Voltar")
-                .url(baseUrl + "/ui/poll/listing")
+                .url(baseUrl + "/ui/poll/listing/" + listing)
                 .body(backButtonData)
                 .build();
 

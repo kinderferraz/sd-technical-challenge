@@ -15,21 +15,21 @@ public class PollGatewaySelection {
                 .id("idt_user_polls")
                 .texto("Suas iniciativas")
                 .url(baseUrl + "/ui/polls/listing")
-                .body(copyAndAdd(data, Map.of("listingOf", "userPolls")))
+                .body(copyAndAdd(data, Map.of("listingOf", "user")))
                 .build();
 
         Element openPolls = Element.builder()
                 .texto("Iniciativas em aberto")
                 .url(baseUrl + "/ui/polls/listing")
                 .id("idt_open_polls")
-                .body(copyAndAdd(data, Map.of("listingOf", "openPolls")))
+                .body(copyAndAdd(data, Map.of("listingOf", "open")))
                 .build();
 
         Element closedPolls = Element.builder()
                 .texto("Iniciativas finalizadas")
                 .url(baseUrl + "/ui/polls/listing")
                 .id("idt_open_polls")
-                .body(copyAndAdd(data, Map.of("listingOf", "closedPolls")))
+                .body(copyAndAdd(data, Map.of("listingOf", "closed")))
                 .build();
 
         Element newPoll = Element.builder()
