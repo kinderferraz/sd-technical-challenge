@@ -24,9 +24,12 @@ public class ListingSelection {
                 .collect(Collectors.toList());
 
         if (items.isEmpty()) {
+            data.remove("listingOf");
             items.add(Element.builder()
                     .tipo(UIType.TEXT)
                     .texto("Sentimos muito, não há dados.")
+                    .url(baseUrl + "/ui/poll-gateway")
+                    .body(data)
                     .build());
         }
 

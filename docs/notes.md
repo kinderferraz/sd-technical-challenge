@@ -70,6 +70,13 @@ formularios quanto seleções, que apesar de ser interessante a possibilidade de
 colocar botões de voltar numa seleção, não é previsto no design. Uma segunda meta
 de desenvolvimento é separar estas telas apropriadamente.
 
+Conforme avanco o desenvolvimento, não posso deixar de notar que a implementacão de telas 
+no back end, da forma como optei por fazer, tráz pontos negativos de arquitetura, os quais
+tento lidar de forma adequada (mas preferia um outra solucão de API que eliminasse a necessidade disso).
+Especificamente, estou tratantdo o estado da sessão do usuário como elemento de backend, incluindo e removendo
+elementos extras do body das requests que retornam como forma de permitir uma jornada fluída.
+Entretanto, o custo disso é manutenibilidade do código, uma vez que a cada componente do pacote `Screen`
+tenho que gerenciar estes elementos, remover os que não são necessários e incluir outros.
 
 ### Async
 Visando oferecer uma experiencia aprimorada para o usuario, o ideal seria uma implementação de 
@@ -88,8 +95,6 @@ Para o tratamento de excecão, pensando em manter uma experiencia de usuario agr
 implementarei um tratamento baseado em handlers como propostos pelo framework.
 Faco essa escolha pensando no acoplamento entre as telas e a API, que, na implementacão
 que escolhi, impede a mistura de telas de FORMULÁRIO e SELECÃO.
-
-## Teste de carga
 
 ****
 
