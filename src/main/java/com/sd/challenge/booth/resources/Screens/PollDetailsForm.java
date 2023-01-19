@@ -1,6 +1,7 @@
 package com.sd.challenge.booth.resources.Screens;
 
 import com.sd.challenge.booth.data.entities.Poll;
+import com.sd.challenge.booth.data.entities.UserVote;
 import com.sd.challenge.booth.resources.widgets.Element;
 import com.sd.challenge.booth.resources.widgets.Form;
 import com.sd.challenge.booth.services.ui.UIType;
@@ -12,7 +13,7 @@ import java.util.Map;
 
 public class PollDetailsForm {
 
-    public static Form get(Poll poll, Map<String, String> data) {
+    public static Form get(Poll poll, UserVote vote, Map<String, String> data) {
         Map<String, String> backButtonData = new HashMap<>(Map.copyOf(data));
         backButtonData.remove("pollId");
 
@@ -35,6 +36,14 @@ public class PollDetailsForm {
                 .valor(poll.getEndsAt().format(sd))
                 .build();
 
+        Element voteStatus = Element.builder()
+                .tipo(UIType.TEXT)
+                .texto(vote == null
+                        ? "Você ainda nao votou nesta iniciativa"
+                        : "Você já votou nesta iniciativa")
+                .build();
+
+
         Element buttonBack = Element.builder()
                 .texto("Voltar")
                 .url("/ui/poll/listing")
@@ -49,9 +58,9 @@ public class PollDetailsForm {
 
         return Form.builder()
                 .titulo(poll.getTitle())
-                .itens(List.of(description, createdAt, endsAt))
+                .itens(List.of(voteStatus, description, createdAt, endsAt))
                 .botaoCancelar(buttonBack)
-                .botaoOk(buttonVote)
+                .botaoOk(vote == null ? buttonVote : null)
                 .build();
     }
 

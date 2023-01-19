@@ -2,11 +2,13 @@ package com.sd.challenge.booth.services.ui;
 
 import com.sd.challenge.booth.data.entities.Poll;
 import com.sd.challenge.booth.data.entities.User;
+import com.sd.challenge.booth.data.entities.UserVote;
 import com.sd.challenge.booth.data.repositories.PollRepository;
 import com.sd.challenge.booth.data.repositories.UserRepository;
+import com.sd.challenge.booth.data.repositories.UserVoteRepostory;
 import com.sd.challenge.booth.resources.Screens.*;
-import com.sd.challenge.booth.resources.widgets.Form;
 import com.sd.challenge.booth.resources.exception.PollException;
+import com.sd.challenge.booth.resources.widgets.Form;
 import com.sd.challenge.booth.resources.widgets.Selection;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +30,16 @@ public class UiService {
 
     UserRepository userRepository;
 
+    UserVoteRepostory userVoteRepostory;
+
 
     @Autowired
     public UiService(
             UserRepository userRepository,
-            PollRepository pollRepository
+            PollRepository pollRepository,
+            UserVoteRepostory userVoteRepostory
     ) {
+        this.userVoteRepostory = userVoteRepostory;
         this.userRepository = userRepository;
         this.pollRepository = pollRepository;
     }
@@ -78,7 +84,11 @@ public class UiService {
                         .message("M=getPollDetails error getting poll")
                         .data(data)
                         .build());
-        return PollDetailsForm.get(poll, data);
+
+        UserVote vote = userVoteRepostory
+                .findUserVoteByPollAndVoter(poll.getId(), Long.valueOf(data.get("userId")));
+
+        return PollDetailsForm.get(poll, vote, data);
     }
 
     public Form getPollResults(Map<String, String> data) {
