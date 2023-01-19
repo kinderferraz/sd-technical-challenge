@@ -13,17 +13,28 @@ insert into USERS(dsc_cpf, dsc_name) values ('90463445090', 'William Bonner');
 insert into USERS(dsc_cpf, dsc_name) values ('75464234063', 'Renata Vasconcelos');
 insert into USERS(dsc_cpf, dsc_name) values ('17847387000', 'Fatima Bernardes');
 
+-- yet to open by user
 insert into POLL(dsc_title, dsc_proposal, dat_created, idt_owner)
-values ('Primeira proposta', 'comer bolo?', now(), 1); -- yet to open
-insert into POLL(dsc_title, dsc_proposal, dat_created, idt_owner, dat_opened, dat_ended)
-values ('Segunda proposta',  'comer pipoca?', now(), 1, dateadd('DAY', -1, now()),  dateadd('MONTH', 1, now())); -- open
-insert into POLL(dsc_title, dsc_proposal, dat_created, idt_owner, dat_opened, dat_ended)
-values ('Terceira proposta', 'tomar café?', now(), 1, dateadd('MONTH', -1, now()),  dateadd('DAY', -1, now())); -- closed
-insert into POLL(dsc_title, dsc_proposal, dat_created, idt_owner)
-values ('Quarta proposta',   'tomar sorvete?', now(), 1); -- open
+values ('Primeira proposta', 'comer bolo?', now(), 1);
 
-insert into USER_VOTE(idt_user, idt_poll, flg_accepted)
-values (1, 2, 1);
+-- opened by user
+insert into POLL(dsc_title, dsc_proposal, dat_created, idt_owner, dat_opened, dat_ended)
+values ('Segunda proposta',  'comer pipoca?', now(), 1, dateadd('DAY', -1, now()),  dateadd('MONTH', 1, now()));
+
+-- closed by user
+insert into POLL(dsc_title, dsc_proposal, dat_created, idt_owner, dat_opened, dat_ended)
+values ('Terceira proposta', 'tomar café?', now(), 2, dateadd('MONTH', -1, now()),  dateadd('DAY', -1, now()));
+
+-- opened by another user - logged in user voted
+insert into POLL(dsc_title, dsc_proposal, dat_created, idt_owner)
+values ('Quarta proposta',   'tomar sorvete?', now(), 2, dateadd('MONTH', -1, now()),  dateadd('DAY', -1, now()));
+
+-- opened by another user - logged in user did not vote
+insert into POLL(dsc_title, dsc_proposal, dat_created, idt_owner)
+values ('Quinta proposta',   'comer pastel?', now(), 2, dateadd('MONTH', -1, now()),  dateadd('DAY', -1, now()));
+
+
+-- user poll open
 insert into USER_VOTE(idt_user, idt_poll, flg_accepted)
 values (2, 2, 0);
 insert into USER_VOTE(idt_user, idt_poll, flg_accepted)
@@ -33,8 +44,7 @@ values (4, 2, 1);
 insert into USER_VOTE(idt_user, idt_poll, flg_accepted)
 values (5, 2, 1);
 
-insert into USER_VOTE(idt_user, idt_poll, flg_accepted)
-values (1, 3, 1);
+-- user poll closed
 insert into USER_VOTE(idt_user, idt_poll, flg_accepted)
 values (2, 3, 0);
 insert into USER_VOTE(idt_user, idt_poll, flg_accepted)
@@ -43,3 +53,7 @@ insert into USER_VOTE(idt_user, idt_poll, flg_accepted)
 values (4, 3, 1);
 insert into USER_VOTE(idt_user, idt_poll, flg_accepted)
 values (5, 3, 1);
+
+-- other user poll - vote by logged in user
+insert into USER_VOTE(idt_user, idt_poll, flg_accepted)
+values (1, 4, 1);
