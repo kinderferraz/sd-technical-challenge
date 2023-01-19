@@ -118,4 +118,9 @@ public class UiService {
     public Selection getVotingForm(Map<String, String> data) {
         return VoteSelection.get(baseUrl, data);
     }
+
+    public Form getAcceptedForm(Map<String, String> data) {
+        return AcceptedForm.get(baseUrl, data);
+    }
+
 }

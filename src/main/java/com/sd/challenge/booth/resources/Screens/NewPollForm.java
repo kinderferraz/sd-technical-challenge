@@ -10,6 +10,8 @@ import java.util.Map;
 public class NewPollForm {
 
     public static Form get(String baseUrl, Map<String, String> data) {
+        data.put("newPoll", "true");
+
         Element instructionsText = Element.builder()
                 .id("idt_instructions")
                 .tipo(UIType.TEXT)
