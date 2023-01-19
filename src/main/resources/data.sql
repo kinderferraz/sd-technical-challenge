@@ -23,14 +23,14 @@ values ('Segunda proposta',  'comer pipoca?', now(), 1, dateadd('DAY', -1, now()
 
 -- closed by user
 insert into POLL(dsc_title, dsc_proposal, dat_created, idt_owner, dat_opened, dat_ended)
-values ('Terceira proposta', 'tomar café?', now(), 2, dateadd('MONTH', -1, now()),  dateadd('DAY', -1, now()));
+values ('Terceira proposta', 'tomar café?', now(), 1, dateadd('MONTH', -1, now()),  dateadd('DAY', -1, now()));
 
 -- opened by another user - logged in user voted
-insert into POLL(dsc_title, dsc_proposal, dat_created, idt_owner)
+insert into POLL(dsc_title, dsc_proposal, dat_created, idt_owner, dat_opened, dat_ended)
 values ('Quarta proposta',   'tomar sorvete?', now(), 2, dateadd('MONTH', -1, now()),  dateadd('DAY', -1, now()));
 
 -- opened by another user - logged in user did not vote
-insert into POLL(dsc_title, dsc_proposal, dat_created, idt_owner)
+insert into POLL(dsc_title, dsc_proposal, dat_created, idt_owner, dat_opened, dat_ended)
 values ('Quinta proposta',   'comer pastel?', now(), 2, dateadd('MONTH', -1, now()),  dateadd('DAY', -1, now()));
 
 
