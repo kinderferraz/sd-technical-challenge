@@ -4,6 +4,7 @@ import com.sd.challenge.booth.data.entities.Poll;
 import com.sd.challenge.booth.mapper.UiMapper;
 import com.sd.challenge.booth.resources.widgets.Element;
 import com.sd.challenge.booth.resources.widgets.Selection;
+import com.sd.challenge.booth.services.ui.UIType;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,14 @@ public class ListingSelection {
         List<Element> items = polls
                 .map(p -> mapper.mapPollToElement(p, baseUrl, data))
                 .collect(Collectors.toList());
+
+        if (items.isEmpty()) {
+            items.add(Element.builder()
+                    .tipo(UIType.TEXT)
+                            .texto("Você ainda não tem iniciativas abertas. " +
+                                    "Pode criar acessando o formulário \"Propor Iniciativa\"")
+                    .build());
+        }
 
         return Selection.builder()
                 .titulo(title)

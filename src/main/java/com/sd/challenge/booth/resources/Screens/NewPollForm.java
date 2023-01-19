@@ -52,7 +52,7 @@ public class NewPollForm {
                 .build();
 
         return Form.builder()
-                .titulo("Nova votação")
+                .titulo("Propor Iniciativa")
                 .itens(elements)
                 .botaoCancelar(cancelButton)
                 .botaoOk(acceptButton)
