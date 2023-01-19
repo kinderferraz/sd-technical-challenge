@@ -107,7 +107,7 @@ public class UiService {
 
     public Form getPollResults(Map<String, String> data) {
         Long id = Long.parseLong(data.get("pollId"));
-        Poll poll = pollRepository.findByIdAndEndsAtBeforeWithVotes(id, LocalDateTime.now())
+        Poll poll = pollRepository.findById(id)
                 .orElseThrow(() -> PollException.builder()
                         .message("M=getPollResults error getting poll")
                         .data(data)
