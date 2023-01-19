@@ -94,7 +94,7 @@ public class UiService {
         UserVote vote = userVoteRepostory
                 .findUserVoteByPollAndVoter(poll.getId(), Long.valueOf(data.get("userId")));
 
-        return PollDetailsForm.get(poll, vote, data);
+        return PollDetailsForm.get(poll, vote, data, null);
     }
 
     public Form getPollResults(Map<String, String> data) {

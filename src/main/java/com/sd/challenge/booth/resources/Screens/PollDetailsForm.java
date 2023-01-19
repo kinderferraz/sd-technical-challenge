@@ -6,6 +6,7 @@ import com.sd.challenge.booth.resources.widgets.Element;
 import com.sd.challenge.booth.resources.widgets.Form;
 import com.sd.challenge.booth.services.ui.UIType;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.Map;
 
 public class PollDetailsForm {
 
-    public static Form get(Poll poll, UserVote vote, Map<String, String> data) {
+    public static Form get(Poll poll, UserVote vote, Map<String, String> data, Boolean cpfValidation) {
         Map<String, String> backButtonData = new HashMap<>(Map.copyOf(data));
         backButtonData.remove("pollId");
 
@@ -60,8 +61,14 @@ public class PollDetailsForm {
                 .titulo(poll.getTitle())
                 .itens(List.of(voteStatus, description, createdAt, endsAt))
                 .botaoCancelar(buttonBack)
-                .botaoOk(vote == null ? buttonVote : null)
+                .botaoOk(userMayVote(poll, vote, cpfValidation) ? buttonVote : null)
                 .build();
+    }
+
+    private static boolean userMayVote(Poll poll, UserVote vote, Boolean cpfValidation) {
+        return vote == null
+                && poll.getEndsAt().isAfter(LocalDateTime.now())
+                && cpfValidation.equals(Boolean.TRUE);
     }
 
 }
