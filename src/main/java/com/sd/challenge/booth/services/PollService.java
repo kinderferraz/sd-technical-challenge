@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Map;
 
 @Service
@@ -32,23 +33,15 @@ public class PollService {
     }
 
     public void savePoll(Map<String, String> data) {
-        DateTimeFormatter sd = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-        String userId = data.get("userId");
-        User owner = userRepository.findById(Long.parseLong(userId))
-                .orElseThrow(() -> PollException.builder()
-                        .message("poll not found")
-                        .data(Map.of("userId", userId))
-                        .build());
+        Long userId = Long.valueOf(data.get("userId"));
+        User owner = getUser(userId, "M=savePoll");
 
         String title = data.get("idtTitle");
         String description = data.get("idtDescription");
-        String closingDate = data.get("idtClosingDate");
 
         Poll poll = Poll.builder()
                 .title(title)
                 .proposal(description)
-                .endsAt(LocalDate.parse(closingDate, sd).atStartOfDay())
                 .createdAt(LocalDateTime.now())
                 .owner(owner)
                 .build();
@@ -62,17 +55,8 @@ public class PollService {
         Long pollId = Long.valueOf(data.get("pollId"));
         Long userId = Long.valueOf(data.get("userId"));
 
-        Poll poll = pollRepository.findById(pollId)
-                .orElseThrow(() -> PollException.builder()
-                        .message("poll not found")
-                        .data(Map.of("userId", String.valueOf(userId)))
-                        .build());
-
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> PollException.builder()
-                        .message("user not found")
-                        .data(Map.of("userId", String.valueOf(userId)))
-                        .build());
+        Poll poll = getPoll(pollId, "M=castVote", userId);
+        User user = getUser(userId, "M=castVote");
 
         if (userVoteRepository.findUserVoteByPollAndVoter(pollId, userId) != null)
             throw PollException.builder()
@@ -82,7 +66,6 @@ public class PollService {
                     .data(Map.of("userId", userId.toString()))
                     .build();
 
-
         UserVote vote = UserVote.builder()
                 .vote(voteValue)
                 .poll(poll)
@@ -91,4 +74,47 @@ public class PollService {
 
         userVoteRepository.save(vote);
     }
+
+    public void openPoll(Map<String, String> data) {
+        Long pollId = Long.valueOf(data.get("pollId"));
+        Long userId = Long.valueOf(data.get("userId"));
+
+        Poll poll = getPoll(pollId, "M=openPoll", userId);
+
+        if(! poll.getOwner().getId().equals(userId))
+            throw PollException.builder()
+                    .message("M=openPoll user does not own poll poll=" + pollId +
+                            " userId=" + userId)
+                    .data(Map.of("userId", String.valueOf(userId)))
+                    .build();
+
+        poll.setOpenedAt(LocalDateTime.now());
+        poll.setEndsAt(getEndingTime(data));
+        pollRepository.save(poll);
+    }
+
+    private LocalDateTime getEndingTime(Map<String, String> data) {
+        String timestamp = data.getOrDefault("idtClosesAt", null);
+        if (timestamp == null) return LocalDateTime.now().plus(1, ChronoUnit.MINUTES);
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return LocalDate.parse(timestamp, dtf).atStartOfDay();
+    }
+
+    private Poll getPoll(Long pollId, String method, Long userId) {
+        return pollRepository.findById(pollId)
+                .orElseThrow(() -> PollException.builder()
+                        .message(method + " poll not found pollId=" + pollId)
+                        .data(Map.of("userId", String.valueOf(userId)))
+                        .build());
+    }
+
+    private User getUser(Long userId, String method) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> PollException.builder()
+                        .message(method + " user not found userId="+userId)
+                        .data(Map.of("userId", String.valueOf(userId)))
+                        .build());
+    }
+
 }

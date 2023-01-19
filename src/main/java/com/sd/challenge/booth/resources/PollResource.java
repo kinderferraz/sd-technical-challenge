@@ -43,6 +43,13 @@ public class PollResource {
                 .body(uiService.getAcceptedForm(data));
     }
 
+    @PostMapping("/open")
+    public ResponseEntity<Form> openPoll(
+            @RequestBody Map<String, String> data
+    ) {
+        pollService.openPoll(data);
+        return ResponseEntity.ok(uiService.getAcceptedForm(data));
+    }
 
     @PostMapping("/vote")
     public ResponseEntity<Form> vote(
