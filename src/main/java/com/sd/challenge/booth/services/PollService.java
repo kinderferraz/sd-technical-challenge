@@ -45,6 +45,8 @@ public class PollService {
                 .proposal(description)
                 .createdAt(LocalDateTime.now())
                 .owner(owner)
+                .acceptedVotes(0)
+                .totalVotes(0)
                 .build();
 
         pollRepository.save(poll);
