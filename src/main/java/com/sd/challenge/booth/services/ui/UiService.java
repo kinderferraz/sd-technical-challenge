@@ -48,6 +48,8 @@ public class UiService {
         this.pollRepository = pollRepository;
     }
 
+    private final String pollErrorCause = " error getting poll";
+
     public Form makeNewPollForm(Map<String, String> data) {
         return NewPollForm.get(baseUrl, data);
     }
@@ -91,7 +93,7 @@ public class UiService {
         Long pollId = Long.valueOf(data.get("pollId"));
 
         Poll poll = pollRepository.findById(pollId)
-                .orElseThrow(() -> makeException("M=getPollDetails", data));
+                .orElseThrow(() -> makeException("M=getPollDetails" + pollErrorCause, data));
 
         String origin = data.get("listingOf");
 
@@ -110,7 +112,7 @@ public class UiService {
     public Form getPollResults(Map<String, String> data) {
         Long id = Long.parseLong(data.get("pollId"));
         Poll poll = pollRepository.findById(id)
-                .orElseThrow(() -> makeException("M=getPollResults", data));
+                .orElseThrow(() -> makeException("M=getPollResults" + pollErrorCause, data));
 
         return PollResultsForm.get(poll, baseUrl, data);
     }
@@ -119,7 +121,12 @@ public class UiService {
         Long pollId = Long.parseLong(data.get("pollId"));
 
         Poll poll = pollRepository.findById(pollId)
-                .orElseThrow(() -> makeException("M=getVotingForm", data));
+                .orElseThrow(() -> makeException("M=getVotingForm" + pollErrorCause, data));
+
+        if (poll.getOwner().getId().equals(Long.parseLong(data.get("userId"))))
+            throw makeException("M=getVotingForm user trying to vote on own poll pollId=" + pollId +
+                    " userId=" + data.get("userId"), data);
+
 
         return VoteSelection.get(baseUrl, data, poll);
     }
@@ -128,9 +135,9 @@ public class UiService {
         return AcceptedForm.get(baseUrl, data);
     }
 
-    private PollException makeException(String method, Map<String, String> data) {
+    private PollException makeException(String message, Map<String, String> data) {
         return PollException.builder()
-                .message(method + " error getting poll")
+                .message(message)
                 .data(data)
                 .build();
     }
