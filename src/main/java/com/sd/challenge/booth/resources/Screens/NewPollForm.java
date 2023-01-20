@@ -30,15 +30,8 @@ public class NewPollForm {
                 .titulo("Descrição da iniciativa")
                 .build();
 
-        Element closingDateInput = Element.builder()
-                .tipo(UIType.DATE_INPUT)
-                .id("idt_closing_date")
-                .titulo("Data de encerramento da votação")
-                .build();
-
         List<Element> elements = List.of(
-                instructionsText, titleInput,
-                closingDateInput, descriptionInput
+                instructionsText, titleInput, descriptionInput
         );
 
         Element acceptButton = Element.builder()
