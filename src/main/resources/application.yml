@@ -19,7 +19,7 @@ spring:
     defer-datasource-initialization: true
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
   jackson:
     default-property-inclusion: non_null
   h2:
@@ -33,6 +33,23 @@ application:
   properties:
     base-url: http://localhost:8080
     cpf-url: https://user-info.herokuapp.com
+
+---
+spring:
+  config:
+    name: debug
+
+logging:
+  level:
+    com.sd.challenge.booth: DEBUG
+    br.com.uol.ps.mb.feign: DEBUG
+    org.springframework.cache: TRACE
+
+feign:
+  client:
+    config:
+      default:
+        loggerLevel: FULL
 
 ---
 spring:
