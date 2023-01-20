@@ -90,13 +90,21 @@ public class UiService {
         Long userId = Long.valueOf(data.get("userId"));
         Long pollId = Long.valueOf(data.get("pollId"));
 
-        Boolean userMayVote = userService.userMayVote(userId);
-        UserVote vote = userVoteRepostory.findUserVoteByPollAndVoter(pollId, userId);
-
         Poll poll = pollRepository.findById(pollId)
                 .orElseThrow(() -> makeException("M=getPollDetails", data));
 
-        return PollDetailsForm.get(poll, vote, data, userMayVote, baseUrl);
+        String origin = data.get("listingOf");
+
+        if (origin.equals("user"))
+            return PollDetailsForm.yetToOpenForm(userId, poll, baseUrl, data);
+
+        if (origin.equals("closed"))
+            return PollDetailsForm.getClosedPollDetails(poll, baseUrl, data);
+
+
+        Boolean userMayVote = userService.userMayVote(userId);
+        UserVote vote = userVoteRepostory.findUserVoteByPollAndVoter(pollId, userId);
+        return PollDetailsForm.getOpenPollDetails(userId, poll, baseUrl, data, vote, userMayVote);
     }
 
     public Form getPollResults(Map<String, String> data) {

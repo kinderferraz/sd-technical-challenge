@@ -2,26 +2,28 @@ package com.sd.challenge.booth.resources.Screens;
 
 import com.sd.challenge.booth.data.entities.Poll;
 import com.sd.challenge.booth.data.entities.UserVote;
+import com.sd.challenge.booth.resources.exception.PollException;
 import com.sd.challenge.booth.resources.widgets.Element;
 import com.sd.challenge.booth.resources.widgets.Form;
 import com.sd.challenge.booth.services.ui.UIType;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class PollDetailsForm {
 
-    public static Form get(
-            Poll poll, UserVote vote, Map<String, String> data, Boolean cpfValidation,
-            String baseUrl
-    ) {
-        String status = votingStatus(poll);
+    public static Form yetToOpenForm(Long userId, Poll poll, String baseUrl, Map<String, String> data) {
+        if (!poll.getOwner().getId().equals(userId))
+            throw PollException.builder()
+                    .message("M=yetToOpenForm poll accessed by another user")
+                    .build();
 
-        Map<String, String> backButtonData = new HashMap<>(Map.copyOf(data));
-        backButtonData.remove("pollId");
+        Element buttonOpen = Element.builder()
+                .texto("Abrir para votação")
+                .url(baseUrl + "/polls/open")
+                .body(data)
+                .build();
 
         Element description = Element.builder()
                 .tipo(UIType.TEXT)
@@ -34,95 +36,94 @@ public class PollDetailsForm {
                 .valor(poll.getCreatedAt().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))
                 .build();
 
-        Element openStatus = getStatusElement(poll, status);
-
-        Element voteStatus = Element.builder()
+        Element status = Element.builder()
                 .tipo(UIType.TEXT)
-                .texto(voteStatus(vote, cpfValidation))
-                .build();
-
-        String listing = data.get("listingOf");
-        Element buttonBack = Element.builder()
-                .texto("Voltar")
-                .url(baseUrl + "/ui/poll/listing/" + listing)
-                .body(backButtonData)
+                .texto("Iniciativa ainda não aberta para votação.")
                 .build();
 
         return Form.builder()
                 .titulo(poll.getTitle())
-                .itens(List.of(voteStatus, description, createdAt, openStatus))
-                .botaoCancelar(buttonBack)
-                .botaoOk(chooseButton(poll, data, baseUrl, status))
+                .itens(List.of(description, createdAt, status))
+                .botaoCancelar(getBackButton(baseUrl, "user", data))
+                .botaoOk(buttonOpen)
                 .build();
     }
 
-    private static Element getStatusElement(Poll poll, String status) {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        String title;
-
-        if (status.equalsIgnoreCase("open"))
-            title = "Iniciativa aberta para votação  até " + poll.getEndsAt().format(dtf);
-        else if (status.equalsIgnoreCase("notOpen"))
-            title = "Iniciativa ainda não aberta para votação";
-        else
-            title = "Iniciativa fechada. Confira os resultados.";
-
+    private static Element getBackButton(String baseUrl, String origin, Map<String, String> backButtonData) {
+        backButtonData.remove("pollId");
         return Element.builder()
+                .texto("Voltar")
+                .url(baseUrl + "/ui/poll/listing/" + origin)
+                .body(backButtonData)
+                .build();
+    }
+
+    public static Form getClosedPollDetails(Poll poll, String baseUrl, Map<String, String> data) {
+        Element seeResultsButton = Element.builder()
+                .texto("Ver Resultados")
+                .url(baseUrl + "/polls/results")
+                .body(data)
+                .build();
+
+        Element description = Element.builder()
                 .tipo(UIType.TEXT)
-                .texto(title)
+                .texto(poll.getProposal())
+                .build();
+
+        Element createdAt = Element.builder()
+                .tipo(UIType.TEXT)
+                .titulo("Criada em: ")
+                .valor(poll.getCreatedAt().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))
+                .build();
+
+        Element status = Element.builder()
+                .tipo(UIType.TEXT)
+                .texto("Iniciativa fechada. Confira os resultados.")
+                .build();
+
+        return Form.builder()
+                .titulo(poll.getTitle())
+                .botaoOk(seeResultsButton)
+                .itens(List.of(description, createdAt, status))
+                .botaoCancelar(getBackButton(baseUrl, "closed", data))
                 .build();
     }
 
-    private static Element chooseButton(
-            Poll poll, Map<String, String> data, String baseUrl, String status
+    public static Form getOpenPollDetails(
+            Long userId, Poll poll, String baseUrl, Map<String, String> data, UserVote vote,
+            Boolean userMayVote
     ) {
-        Element voteButton = Element.builder()
-                .texto("Votar")
-                .url(baseUrl + "/ui/poll/vote")
-                .body(data)
+        Element voteButton = userMayVote && !poll.getOwner().getId().equals(userId)
+                ? Element.builder().texto("Votar").url(baseUrl + "/ui/poll/vote").body(data).build()
+                : null;
+
+        Element description = Element.builder()
+                .tipo(UIType.TEXT)
+                .texto(poll.getProposal())
                 .build();
 
-        Element openButton = Element.builder()
-                .texto("Abrir para votação")
-                .url(baseUrl + "/polls/open")
-                .body(data)
+        Element createdAt = Element.builder()
+                .tipo(UIType.TEXT)
+                .titulo("Criada em: ")
+                .valor(poll.getCreatedAt().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))
                 .build();
 
-        long userId = Long.parseLong(data.get("userId"));
+        String complement = vote != null
+                ? "Você já votou e fez sua parte"
+                : !userMayVote ? "Infelizmente você não pode votar."
+                : poll.getOwner().getId().equals(userId) ? "Essa iniciativa é sua, você não pode votar." : "Vote.";
 
-        if (status.equalsIgnoreCase("notOpen") && poll.getOwner().getId().equals(userId))
-            return openButton;
+        Element status = Element.builder()
+                .tipo(UIType.TEXT)
+                .texto("Iniciativa aberta. " + complement)
+                .build();
 
-        if (status.equalsIgnoreCase("open"))
-            return voteButton;
-
-        return null;
+        return Form.builder()
+                .titulo(poll.getTitle())
+                .botaoOk(voteButton)
+                .itens(List.of(description, createdAt, status))
+                .botaoCancelar(getBackButton(baseUrl, "open", data))
+                .build();
     }
-
-    private static String voteStatus(UserVote vote, Boolean cpfValidation) {
-        if (cpfValidation.equals(Boolean.FALSE) && vote == null)
-            return "Você não pode votar nesta iniciativa";
-
-        if(cpfValidation.equals(Boolean.TRUE) && vote == null)
-            return "Você ainda não votou nesta iniciativa";
-
-        return "Você já votou nesta iniciativa";
-    }
-
-    private static boolean userMayVote(Poll poll, UserVote vote, Boolean cpfValidation) {
-        return poll.getOpenedAt() != null
-                && poll.getEndsAt().isAfter(LocalDateTime.now())
-                && vote == null
-                && poll.getEndsAt().isAfter(LocalDateTime.now())
-                && cpfValidation.equals(Boolean.TRUE);
-    }
-
-    private static String votingStatus(Poll poll) {
-        if (poll.getOpenedAt()==null) return "notOpen";
-        if (poll.getCreatedAt().isBefore(LocalDateTime.now()))
-            return "closed";
-        return "open";
-    }
-
 
 }
