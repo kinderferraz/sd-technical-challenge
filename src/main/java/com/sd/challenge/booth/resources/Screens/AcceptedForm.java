@@ -45,7 +45,7 @@ public class AcceptedForm {
 
         if (list.size() != 1)
             throw PollException.builder()
-                    .message("too many options passed to accept form")
+                    .message("too few or too many options passed to accept form")
                     .data(Map.of("userId", userId))
                     .build();
 
