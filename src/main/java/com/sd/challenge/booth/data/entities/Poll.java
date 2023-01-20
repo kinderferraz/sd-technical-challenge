@@ -45,7 +45,7 @@ public class Poll {
 
     @JsonIgnore
     @ToString.Exclude
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
     List<UserVote> pollVotes;
 
 }

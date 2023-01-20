@@ -33,7 +33,7 @@ public class User {
 
     @JsonIgnore
     @ToString.Exclude
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
     Set<UserVote> userVotes;
 
 }
