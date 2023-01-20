@@ -127,6 +127,9 @@ public class UiService {
             throw makeException("M=getVotingForm user trying to vote on own poll pollId=" + pollId +
                     " userId=" + data.get("userId"), data);
 
+        if (poll.getEndsAt() == null || poll.getEndsAt().isBefore(LocalDateTime.now()))
+            throw makeException("M=getVotingForm user trying to vote on clossed poll pollId=" + pollId +
+                    " userId=" + data.get("userId"), data);
 
         return VoteSelection.get(baseUrl, data, poll);
     }
