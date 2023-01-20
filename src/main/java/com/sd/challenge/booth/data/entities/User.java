@@ -20,7 +20,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(name = "DSC_CPF", length = 16, nullable = false)
+    @Column(name = "DSC_CPF", length = 16, nullable = false, unique = true)
     String cpf;
 
     @Column(name = "DSC_NAME", nullable = false)
