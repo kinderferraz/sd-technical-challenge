@@ -12,7 +12,6 @@ import java.util.Map;
 public class PollException extends RuntimeException {
 
     String message;
-    Throwable cause;
     Map<String, String> data;
 
 }
