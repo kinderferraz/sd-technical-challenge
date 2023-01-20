@@ -73,7 +73,11 @@ public class PollService {
                 .voter(user)
                 .build();
 
+        poll.setTotalVotes(poll.getTotalVotes() + 1);
+        if(voteValue) poll.setAcceptedVotes(poll.getAcceptedVotes() + 1);
+
         userVoteRepository.save(vote);
+        pollRepository.save(poll);
     }
 
     public void openPoll(Map<String, String> data) {
