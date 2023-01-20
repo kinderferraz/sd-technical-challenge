@@ -36,7 +36,7 @@ public class NewPollForm {
 
         Element acceptButton = Element.builder()
                 .texto("Enviar iniciativa")
-                .url(baseUrl + "/")
+                .url(baseUrl + "/polls")
                 .body(data)
                 .build();
         Element cancelButton = Element.builder()
