@@ -110,6 +110,12 @@ public class PollService {
                     .data(Map.of("userId", String.valueOf(userId)))
                     .build();
 
+        if(poll.getOpenedAt() != null)
+            throw PollException.builder()
+                    .message("M=openPoll poll aleady open=" + pollId)
+                    .data(Map.of("userId", String.valueOf(userId)))
+                    .build();
+
         poll.setOpenedAt(LocalDateTime.now());
         poll.setEndsAt(getEndingTime(data));
         pollRepository.save(poll);
