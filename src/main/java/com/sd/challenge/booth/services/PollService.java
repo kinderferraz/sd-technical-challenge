@@ -26,7 +26,8 @@ public class PollService {
     PollService(
             PollRepository pollRepository,
             UserRepository userRepository,
-            UserVoteRepository userVoteRepository) {
+            UserVoteRepository userVoteRepository
+    ) {
         this.pollRepository = pollRepository;
         this.userRepository = userRepository;
         this.userVoteRepository = userVoteRepository;
