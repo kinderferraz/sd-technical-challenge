@@ -110,9 +110,13 @@ public class UiService {
     }
 
     public Form getPollResults(Map<String, String> data) {
-        Long id = Long.parseLong(data.get("pollId"));
-        Poll poll = pollRepository.findById(id)
+        Long pollId = Long.parseLong(data.get("pollId"));
+        Poll poll = pollRepository.findById(pollId)
                 .orElseThrow(() -> makeException("M=getPollResults" + pollErrorCause, data));
+
+        if (poll.getEndsAt() == null || poll.getEndsAt().isAfter(LocalDateTime.now()))
+            throw makeException("M=getVotingForm user trying to view results of open poll pollId=" + pollId +
+                    " userId=" + data.get("userId"), data);
 
         return PollResultsForm.get(poll, baseUrl, data);
     }
@@ -128,7 +132,7 @@ public class UiService {
                     " userId=" + data.get("userId"), data);
 
         if (poll.getEndsAt() == null || poll.getEndsAt().isBefore(LocalDateTime.now()))
-            throw makeException("M=getVotingForm user trying to vote on clossed poll pollId=" + pollId +
+            throw makeException("M=getVotingForm user trying to vote on closed poll pollId=" + pollId +
                     " userId=" + data.get("userId"), data);
 
         return VoteSelection.get(baseUrl, data, poll);

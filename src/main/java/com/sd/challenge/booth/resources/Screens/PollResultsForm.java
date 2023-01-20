@@ -24,7 +24,7 @@ public class PollResultsForm {
         Element backButton = Element.builder()
                 .texto("Voltar")
                 .url(baseUrl + "/ui/polls/listing")
-                .body(data)
+                .body(Map.of("userId", data.get("userId")))
                 .build();
 
         Element totalVotesText = Element.builder()
