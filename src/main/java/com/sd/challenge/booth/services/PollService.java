@@ -7,7 +7,9 @@ import com.sd.challenge.booth.data.repositories.PollRepository;
 import com.sd.challenge.booth.data.repositories.UserRepository;
 import com.sd.challenge.booth.data.repositories.UserVoteRepository;
 import com.sd.challenge.booth.resources.exception.PollException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,6 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Map;
 
+@Slf4j
 @Service
 public class PollService {
 
@@ -78,8 +81,20 @@ public class PollService {
         poll.setTotalVotes(poll.getTotalVotes() + 1);
         if(voteValue) poll.setAcceptedVotes(poll.getAcceptedVotes() + 1);
 
-        userVoteRepository.save(vote);
-        pollRepository.save(poll);
+        saveBoth(poll, vote);
+    }
+
+    @Transactional
+    void saveBoth(Poll poll, UserVote vote) {
+        try {
+            pollRepository.save(poll);
+            userVoteRepository.save(vote);
+        } catch (Exception e) {
+            log.error("M=saveBoth error saving both poll and vote e={}", e.getMessage());
+            throw PollException.builder()
+                    .data(Map.of("userId", String.valueOf(vote.getVoter().getId())))
+                    .build();
+        }
     }
 
     public void openPoll(Map<String, String> data) {
