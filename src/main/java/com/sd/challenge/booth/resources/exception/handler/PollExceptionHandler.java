@@ -31,7 +31,10 @@ public class PollExceptionHandler {
 
         Map<String, String> data = new HashMap<>();
         data.put("userId", ex.getData().get("userId"));
+        return errorForm(baseUrl, data);
+    }
 
+    public static Form errorForm(String baseUrl, Map<String, String> data) {
         Element message = Element.builder()
                 .tipo(UIType.TEXT)
                 .texto("Pedimos desculpa, alguma coisa saiu errado")
