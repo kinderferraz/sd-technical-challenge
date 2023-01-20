@@ -18,20 +18,20 @@ insert into POLL(dsc_title, dsc_proposal, dat_created, idt_owner)
 values ('Primeira proposta', 'comer bolo?', now(), 1);
 
 -- opened by user
-insert into POLL(dsc_title, dsc_proposal, dat_created, idt_owner, dat_opened, dat_ended)
-values ('Segunda proposta',  'comer pipoca?', now(), 1, dateadd('DAY', -1, now()),  dateadd('MONTH', 1, now()));
+insert into POLL(dsc_title, dsc_proposal, dat_created, idt_owner, dat_opened, dat_ended, num_total_votes, num_accepted_votes)
+values ('Segunda proposta',  'comer pipoca?', now(), 1, dateadd('DAY', -1, now()),  dateadd('MONTH', 1, now()), 4, 3);
 
 -- closed by user
-insert into POLL(dsc_title, dsc_proposal, dat_created, idt_owner, dat_opened, dat_ended)
-values ('Terceira proposta', 'tomar café?', now(), 1, dateadd('MONTH', -1, now()),  dateadd('DAY', -1, now()));
+insert into POLL(dsc_title, dsc_proposal, dat_created, idt_owner, dat_opened, dat_ended, num_total_votes, num_accepted_votes)
+values ('Terceira proposta', 'tomar café?', now(), 1, dateadd('MONTH', -1, now()),  dateadd('DAY', -1, now()), 4, 2);
 
 -- opened by another user - logged in user voted
-insert into POLL(dsc_title, dsc_proposal, dat_created, idt_owner, dat_opened, dat_ended)
-values ('Quarta proposta',   'tomar sorvete?', now(), 2, dateadd('MONTH', -1, now()),  dateadd('DAY', -1, now()));
+insert into POLL(dsc_title, dsc_proposal, dat_created, idt_owner, dat_opened, dat_ended, num_total_votes, num_accepted_votes)
+values ('Quarta proposta',   'tomar sorvete?', now(), 2, dateadd('MONTH', -1, now()),  dateadd('DAY', 10, now()), 4, 1);
 
 -- opened by another user - logged in user did not vote
 insert into POLL(dsc_title, dsc_proposal, dat_created, idt_owner, dat_opened, dat_ended)
-values ('Quinta proposta',   'comer pastel?', now(), 2, dateadd('MONTH', -1, now()),  dateadd('DAY', -1, now()));
+values ('Quinta proposta',   'comer pastel?', now(), 2, dateadd('MONTH', -1, now()),  dateadd('DAY', 10, now()));
 
 
 -- user poll open

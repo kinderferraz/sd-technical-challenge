@@ -37,6 +37,12 @@ public class Poll {
     @Column(name = "DAT_OPENED")
     LocalDateTime openedAt;
 
+    @Column(name = "NUM_TOTAL_VOTES", nullable = false, columnDefinition = "integer default 0")
+    Integer totalVotes;
+
+    @Column(name = "NUM_ACCEPTED_VOTES", nullable = false, columnDefinition = "integer default 0")
+    Integer acceptedVotes;
+
     @JsonIgnore
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
