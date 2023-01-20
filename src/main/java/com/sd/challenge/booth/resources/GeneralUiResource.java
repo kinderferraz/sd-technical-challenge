@@ -6,6 +6,7 @@ import com.sd.challenge.booth.resources.widgets.Selection;
 import com.sd.challenge.booth.services.ui.UiService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +14,7 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-@RequestMapping("/ui")
+@RequestMapping(value = "/ui", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 public class GeneralUiResource {
 
     UiService uiService;

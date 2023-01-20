@@ -17,7 +17,7 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/polls", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/polls", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class PollResource {
 
 
