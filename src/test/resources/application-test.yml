@@ -1,0 +1,41 @@
+spring:
+  sql:
+    init:
+      mode: always
+  datasource:
+    url: jdbc:h2:mem:test
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+  jackson:
+    default-property-inclusion: non_null
+  h2:
+    console:
+      enabled: true
+
+server:
+  port: 8080
+
+application:
+  properties:
+    base-url: http://localhost:8080
+    cpf-url: http://localhost:8080
+
+logging:
+  level:
+    com.sd.challenge.booth: DEBUG
+    br.com.uol.ps.mb.feign: DEBUG
+    org.springframework.cache: TRACE
+
+feign:
+  client:
+    config:
+      default:
+        loggerLevel: FULL
+
