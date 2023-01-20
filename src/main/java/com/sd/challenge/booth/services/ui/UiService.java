@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Map;
-import java.util.stream.Stream;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -69,23 +69,20 @@ public class UiService {
 
     public Selection makeUserPollListing(Map<String, String> data) {
         Long userId = Long.parseLong(data.get("userId"));
-        User user = userRepository.findUserByIdWithPolls(userId);
+        Set<Poll> polls = pollRepository.findAllByOwner(userId);
 
-        Stream<Poll> polls = user.getUserPolls().stream().parallel();
 
         return ListingSelection.get(baseUrl, "Suas iniciativas", polls, data);
     }
 
     public Selection makeOpenPollListing(Map<String, String> data) {
-        Stream<Poll> polls = pollRepository
-                .findAllByOpenedAtBeforeAndEndsAtAfter(LocalDateTime.now(), LocalDateTime.now())
-                .stream();
+        Set<Poll> polls = pollRepository
+                .findAllByOpenedAtBeforeAndEndsAtAfter(LocalDateTime.now(), LocalDateTime.now());
         return ListingSelection.get(baseUrl, "Iniciativas em aberto", polls, data);
     }
 
     public Selection makeClosedPollListing(Map<String, String> data) {
-        Stream<Poll> polls = pollRepository.findAllByEndsAtBefore(LocalDateTime.now())
-                .stream();
+        Set<Poll> polls = pollRepository.findAllByEndsAtBefore(LocalDateTime.now());
         return ListingSelection.get(baseUrl, "Iniciativas finalizadas", polls, data);
     }
 

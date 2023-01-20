@@ -8,18 +8,18 @@ import com.sd.challenge.booth.services.ui.UIType;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class ListingSelection {
 
     public static Selection get(
-            String baseUrl, String title, Stream<Poll> polls,
+            String baseUrl, String title, Set<Poll> polls,
             Map<String, String> data
     ) {
         UiMapper mapper = new UiMapper();
 
-        List<Element> items = polls
+        List<Element> items = polls.stream()
                 .map(p -> mapper.mapPollToElement(p, baseUrl, data))
                 .collect(Collectors.toList());
 
