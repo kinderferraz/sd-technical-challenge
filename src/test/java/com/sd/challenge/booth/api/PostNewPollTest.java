@@ -41,6 +41,25 @@ public class PostNewPollTest extends MvcTest {
     }
 
     @Test
+    void postNewPollV2SuccessTest() throws Exception {
+        Map<String, String> postData = Map.of(
+                "userId", "1",
+                "idtTitle", "Sexta proposta",
+                "idtDescription", "Tomar refrigerante",
+                "newPoll", "true"
+        );
+
+        Form acceptedForm = AcceptedForm.get(baseUrl, postData);
+
+        performPostRequest("/polls", postData, status().isCreated(),
+                content().json(gson.toJson(acceptedForm)), "application/vnd.v2+json");
+
+        Optional<Poll> poll = pollRepository.findById(6L);
+        assertTrue(poll.isPresent());
+    }
+
+
+    @Test
     void postNewPollFailTest() throws Exception {
         Map<String, String> postData = Map.of(
                 "userId", "1",

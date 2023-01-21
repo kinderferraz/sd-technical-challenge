@@ -37,12 +37,21 @@ public class MvcTest {
             ResultMatcher expectedStatus,
             ResultMatcher expectedContent
     ) throws Exception {
+        performPostRequest(endpoint, postData, expectedStatus, expectedContent, MediaType.APPLICATION_JSON_VALUE);
+    }
+
+    protected void performPostRequest(
+            String endpoint,
+            Map<String, String> postData,
+            ResultMatcher expectedStatus,
+            ResultMatcher expectedContent,
+            String acceptHeader) throws Exception {
         mockMvc.perform(post(endpoint)
-                        .accept(MediaType.APPLICATION_JSON)
+                        .accept(acceptHeader)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(gson.toJson(postData)))
                 .andExpect(expectedStatus)
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentType(acceptHeader))
                 .andExpect(expectedContent);
     }
 
