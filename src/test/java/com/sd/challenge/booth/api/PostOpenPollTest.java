@@ -11,9 +11,11 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.ResultMatcher;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -24,7 +26,7 @@ public class PostOpenPollTest extends MvcTest {
 
     public static Stream<Arguments> getOpenPollTestArguments() {
         return Stream.of(
-                Arguments.of("Gateway error", "1", "1", "accept", false),
+                Arguments.of("Gateway error", "1", "1", "accept", false, null),
                 Arguments.of("User does not own poll", "1", "4", "openPoll", false),
                 Arguments.of("Poll already open", "1", "2", "openPoll", false),
                 Arguments.of("Success", "1", "1", "openPoll", true)
@@ -37,7 +39,8 @@ public class PostOpenPollTest extends MvcTest {
         Map<String, String> postData = Map.of(
                 "userId", userId,
                 "pollId", pollId,
-                gateway, "true"
+                gateway, "true",
+                "idClosesAt", "30/03/2060"
         );
 
         Form expected = success
@@ -48,6 +51,9 @@ public class PostOpenPollTest extends MvcTest {
 
         performPostRequest("/polls/open", postData, status, content().json(gson.toJson(expected)));
 
+        if (success)
+            assertTrue(pollRepository.findById(1L).orElseThrow()
+                    .getEndsAt().isAfter(LocalDateTime.now()));
     }
 
 }
