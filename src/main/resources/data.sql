@@ -33,6 +33,11 @@ values ('Quarta proposta',   'tomar sorvete?', now(), 2, dateadd('MONTH', -1, no
 insert into POLL(dsc_title, dsc_proposal, dat_created, idt_owner, dat_opened, dat_ended)
 values ('Quinta proposta',   'comer pastel?', now(), 2, dateadd('MONTH', -1, now()),  dateadd('DAY', 10, now()));
 
+-- not yet opened by another user
+insert into POLL(dsc_title, dsc_proposal, dat_created, idt_owner)
+values ('Sexta proposta',   'tomar caldo de cana?', now(), 2);
+
+
 
 -- user poll open
 insert into USER_VOTE(idt_user, idt_poll, flg_accepted)
