@@ -13,6 +13,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -27,9 +28,10 @@ public class GetPollListingTest extends MvcTest {
 
     public static Stream<Arguments> getListingSuccessTestArguments() {
         return Stream.of(
-                Arguments.of("Closed poll test", "closed", "Iniciativas finalizadas"),
-                Arguments.of("Open poll test", "open", "Iniciativas em aberto"),
-                Arguments.of("User poll test", "user", "Suas iniciativas")
+                Arguments.of("Closed poll test", "1", "closed", "Iniciativas finalizadas"),
+                Arguments.of("Open poll test", "1", "open", "Iniciativas em aberto"),
+                Arguments.of("User poll test", "1", "user", "Suas iniciativas"),
+                Arguments.of("Empty listing test", "4", "user", "Suas iniciativas")
         );
     }
 
@@ -43,12 +45,13 @@ public class GetPollListingTest extends MvcTest {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("getListingSuccessTestArguments")
-    void getListingSuccessTest(String name, String listing, String title) throws Exception {
-        Map<String, String> data = Map.of("userId", "1", "listingOf", listing);
+    void getListingSuccessTest(String name, String userId, String listing, String title) throws Exception {
+        Map<String, String> data = new HashMap<>(Map.of("userId", userId, "listingOf", listing));
+        Map<String, String> expectedData = new HashMap<>(Map.of("userId", userId, "listingOf", listing));
 
-        Set<Poll> pollSet = getPollSet(listing);
+        Set<Poll> pollSet = getPollSet(listing, userId);
 
-        Selection openPollListing = ListingSelection.get(baseUrl, title, pollSet, data);
+        Selection openPollListing = ListingSelection.get(baseUrl, title, pollSet, expectedData);
 
         performPostRequest("/ui/poll/listing/" + listing, data, status().isOk(),
                 content().json(gson.toJson(openPollListing)));
@@ -72,7 +75,7 @@ public class GetPollListingTest extends MvcTest {
         );
     }
 
-    private Set<Poll> getPollSet(String listing) {
+    private Set<Poll> getPollSet(String listing, String userId) {
         LocalDateTime now = LocalDateTime.now();
         if (listing.equals("closed"))
             return repository.findAllByEndsAtBefore(now);
@@ -82,7 +85,7 @@ public class GetPollListingTest extends MvcTest {
 
 
         if (listing.equals("user"))
-            return repository.findAllByOwner(1L);
+            return repository.findAllByOwner(Long.parseLong(userId));
 
         throw new RuntimeException();
     }
