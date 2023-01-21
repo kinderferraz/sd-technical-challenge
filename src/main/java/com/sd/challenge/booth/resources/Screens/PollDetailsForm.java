@@ -18,6 +18,7 @@ public class PollDetailsForm {
         if (!poll.getOwner().getId().equals(userId))
             throw PollException.builder()
                     .message("M=yetToOpenForm poll accessed by another user")
+                    .data(data)
                     .build();
 
         Map<String, String> openData = new HashMap<>(data);
