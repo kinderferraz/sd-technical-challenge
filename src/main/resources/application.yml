@@ -37,7 +37,8 @@ application:
 ---
 spring:
   config:
-    name: debug
+    activate:
+      on-profile: debug
 
 logging:
   level:
