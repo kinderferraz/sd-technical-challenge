@@ -1,0 +1,1469 @@
+{
+	"info": {
+		"_postman_id": "6e02d3ca-0c06-4dcf-8746-4f3f2059f7e2",
+		"name": "BoothApi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "LoginPage",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/ui/login",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"ui",
+						"login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "LoginPage",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/ui/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"ui",
+								"login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 19 Jan 2023 18:42:24 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"titulo\": \"Bem vindo\",\n    \"itens\": [\n        {\n            \"tipo\": \"TEXT_INPUT\",\n            \"id\": \"idt_cpf_input\",\n            \"titulo\": \"CPF\"\n        }\n    ],\n    \"botaoOk\": {\n        \"texto\": \"Login\",\n        \"url\": \"http://localhost:8080/ui/poll-gateway\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "PollGateway",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const body = pm.response.json()",
+							"const userId =body.itens[2].body.idt_user",
+							"pm.environment.set(\"userId\", userId)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"idtCpfInput\": \"19279699059\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/ui/poll-gateway",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"ui",
+						"poll-gateway"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "PollGateway",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"idtCpfInput\": \"19279699059\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/ui/poll-gateway",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"ui",
+								"poll-gateway"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 19 Jan 2023 18:41:19 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"titulo\": \"Iniciativas\",\n    \"itens\": [\n        {\n            \"texto\": \"Suas iniciativas\",\n            \"id\": \"idt_user_polls\",\n            \"url\": \"http://localhost:8080/ui/polls/listing\",\n            \"body\": {\n                \"userId\": \"1\",\n                \"listingOf\": \"user\"\n            }\n        },\n        {\n            \"texto\": \"Iniciativas em aberto\",\n            \"id\": \"idt_open_polls\",\n            \"url\": \"http://localhost:8080/ui/polls/listing\",\n            \"body\": {\n                \"userId\": \"1\",\n                \"listingOf\": \"open\"\n            }\n        },\n        {\n            \"texto\": \"Iniciativas finalizadas\",\n            \"id\": \"idt_open_polls\",\n            \"url\": \"http://localhost:8080/ui/polls/listing\",\n            \"body\": {\n                \"userId\": \"1\",\n                \"listingOf\": \"closed\"\n            }\n        },\n        {\n            \"texto\": \"Propor iniciativa\",\n            \"id\": \"idt_new_poll\",\n            \"url\": \"http://localhost:8080/ui/new-poll-form\",\n            \"body\": {\n                \"userId\": \"1\"\n            }\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "GetNewPollForm",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// const body = pm.response.json()",
+							"// const userId =body.itens[2].body.idt_user",
+							"// pm.environment.set(\"userId\", userId)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/ui/new-poll-form",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"ui",
+						"new-poll-form"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "GetNewPollForm",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/ui/new-poll-form",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"ui",
+								"new-poll-form"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 21 Jan 2023 12:11:32 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"titulo\": \"Propor Iniciativa\",\n    \"itens\": [\n        {\n            \"tipo\": \"TEXT\",\n            \"texto\": \"Descreva aqui o objetivo de sua iniciativa e a data de encerramento da votação.Quando finalizar, pressione o botão enviar para abrir a votação\"\n        },\n        {\n            \"tipo\": \"TEXT_INPUT\",\n            \"id\": \"idt_title\",\n            \"titulo\": \"Nome da iniciativa\"\n        },\n        {\n            \"tipo\": \"TEXT_INPUT\",\n            \"id\": \"idt_description\",\n            \"titulo\": \"Descrição da iniciativa\"\n        }\n    ],\n    \"botaoOk\": {\n        \"texto\": \"Enviar iniciativa\",\n        \"url\": \"http://localhost:8080/polls\",\n        \"body\": {\n            \"userId\": \"1\",\n            \"newPoll\": \"true\"\n        }\n    },\n    \"botaoCancelar\": {\n        \"texto\": \"Cancelar\",\n        \"url\": \"http://localhost:8080/ui/poll-gateway\",\n        \"body\": {\n            \"userId\": \"1\",\n            \"newPoll\": \"true\"\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "GetUserPolls",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const body = pm.response.json()",
+							"pm.environment.set(\"listignOf\", body.listingOf)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": 1,\n    \"listingOf\": \"user\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/ui/poll/listing/user",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"ui",
+						"poll",
+						"listing",
+						"user"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "GetUserPolls",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": 1,\n    \"listingOf\": \"user\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/ui/poll/listing/user",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"ui",
+								"poll",
+								"listing",
+								"user"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 20 Jan 2023 01:09:22 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"titulo\": \"Suas iniciativas\",\n    \"itens\": [\n        {\n            \"titulo\": \"Primeira proposta\",\n            \"url\": \"http://localhost:8080/ui/polls/details\",\n            \"body\": {\n                \"userId\": \"1\",\n                \"listingOf\": \"user\",\n                \"pollId\": \"1\"\n            }\n        },\n        {\n            \"titulo\": \"Segunda proposta\",\n            \"url\": \"http://localhost:8080/ui/polls/details\",\n            \"body\": {\n                \"userId\": \"1\",\n                \"listingOf\": \"user\",\n                \"pollId\": \"2\"\n            }\n        },\n        {\n            \"titulo\": \"Terceira proposta\",\n            \"url\": \"http://localhost:8080/ui/polls/details\",\n            \"body\": {\n                \"userId\": \"1\",\n                \"listingOf\": \"user\",\n                \"pollId\": \"3\"\n            }\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "GetClosedPolls",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const body = pm.response.json()",
+							"pm.environment.set(\"listignOf\", body.listingOf)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": 1,\n    \"listingOf\": \"closed\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/ui/poll/listing/closed",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"ui",
+						"poll",
+						"listing",
+						"closed"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "GetClosedPolls",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": 1,\n    \"listingOf\": \"closed\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/ui/poll/listing/closed",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"ui",
+								"poll",
+								"listing",
+								"closed"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 20 Jan 2023 01:10:35 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"titulo\": \"Iniciativas finalizadas\",\n    \"itens\": [\n        {\n            \"titulo\": \"Terceira proposta\",\n            \"url\": \"http://localhost:8080/ui/polls/details\",\n            \"body\": {\n                \"userId\": \"1\",\n                \"listingOf\": \"closed\",\n                \"pollId\": \"3\"\n            }\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "GetOpenPolls",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const body = pm.response.json()",
+							"pm.environment.set(\"listignOf\", body.listingOf)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": 1,\n    \"listingOf\": \"open\" \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/ui/poll/listing/open",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"ui",
+						"poll",
+						"listing",
+						"open"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "GetOpenPolls",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": 1,\n    \"listingOf\": \"open\" \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/ui/poll/listing/open",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"ui",
+								"poll",
+								"listing",
+								"open"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 20 Jan 2023 01:10:45 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"titulo\": \"Iniciativas em aberto\",\n    \"itens\": [\n        {\n            \"titulo\": \"Segunda proposta\",\n            \"url\": \"http://localhost:8080/ui/polls/details\",\n            \"body\": {\n                \"userId\": \"1\",\n                \"listingOf\": \"open\",\n                \"pollId\": \"2\"\n            }\n        },\n        {\n            \"titulo\": \"Quarta proposta\",\n            \"url\": \"http://localhost:8080/ui/polls/details\",\n            \"body\": {\n                \"userId\": \"1\",\n                \"listingOf\": \"open\",\n                \"pollId\": \"4\"\n            }\n        },\n        {\n            \"titulo\": \"Quinta proposta\",\n            \"url\": \"http://localhost:8080/ui/polls/details\",\n            \"body\": {\n                \"userId\": \"1\",\n                \"listingOf\": \"open\",\n                \"pollId\": \"5\"\n            }\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "GetPollDetails",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": \"1\",\n    \"pollId\": \"3\",\n    \"listingOf\": \"closed\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/ui/poll/details",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"ui",
+						"poll",
+						"details"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "GetPollDetails",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": \"1\",\n    \"pollId\": \"2\",\n    \"listingOf\": \"open\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/ui/poll/details",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"ui",
+								"poll",
+								"details"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 21 Jan 2023 23:13:37 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"titulo\": \"Segunda proposta\",\n    \"itens\": [\n        {\n            \"tipo\": \"TEXT\",\n            \"texto\": \"comer pipoca?\"\n        },\n        {\n            \"tipo\": \"TEXT\",\n            \"titulo\": \"Criada em: \",\n            \"valor\": \"21/01/2023\"\n        },\n        {\n            \"tipo\": \"TEXT\",\n            \"texto\": \"Iniciativa aberta. Infelizmente você não pode votar.\"\n        }\n    ],\n    \"botaoCancelar\": {\n        \"texto\": \"Voltar\",\n        \"url\": \"http://localhost:8080/ui/poll/listing/open\",\n        \"body\": {\n            \"userId\": \"1\",\n            \"listingOf\": \"open\"\n        }\n    }\n}"
+				},
+				{
+					"name": "GetPollDetails",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": \"1\",\n    \"pollId\": \"1\",\n    \"listingOf\": \"user\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/ui/poll/details",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"ui",
+								"poll",
+								"details"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 21 Jan 2023 23:15:03 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"titulo\": \"Primeira proposta\",\n    \"itens\": [\n        {\n            \"tipo\": \"TEXT\",\n            \"texto\": \"comer bolo?\"\n        },\n        {\n            \"tipo\": \"TEXT\",\n            \"titulo\": \"Criada em: \",\n            \"valor\": \"21/01/2023\"\n        },\n        {\n            \"tipo\": \"DATE_INPUT\",\n            \"id\": \"idt_closes_at\",\n            \"titulo\": \"Iniciativa aberta até: \"\n        },\n        {\n            \"tipo\": \"TEXT\",\n            \"texto\": \"Iniciativa ainda não aberta para votação.\"\n        }\n    ],\n    \"botaoOk\": {\n        \"texto\": \"Abrir para votação\",\n        \"url\": \"http://localhost:8080/polls/open\",\n        \"body\": {\n            \"openPoll\": \"true\",\n            \"userId\": \"1\",\n            \"pollId\": \"1\",\n            \"listingOf\": \"user\"\n        }\n    },\n    \"botaoCancelar\": {\n        \"texto\": \"Voltar\",\n        \"url\": \"http://localhost:8080/ui/poll/listing/user\",\n        \"body\": {\n            \"userId\": \"1\",\n            \"listingOf\": \"user\"\n        }\n    }\n}"
+				},
+				{
+					"name": "GetPollDetails",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": \"1\",\n    \"pollId\": \"3\",\n    \"listingOf\": \"closed\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/ui/poll/details",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"ui",
+								"poll",
+								"details"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 21 Jan 2023 23:15:34 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"titulo\": \"Terceira proposta\",\n    \"itens\": [\n        {\n            \"tipo\": \"TEXT\",\n            \"texto\": \"tomar café?\"\n        },\n        {\n            \"tipo\": \"TEXT\",\n            \"titulo\": \"Criada em: \",\n            \"valor\": \"21/01/2023\"\n        },\n        {\n            \"tipo\": \"TEXT\",\n            \"texto\": \"Iniciativa fechada. Confira os resultados.\"\n        }\n    ],\n    \"botaoOk\": {\n        \"texto\": \"Ver Resultados\",\n        \"url\": \"http://localhost:8080/polls/results\",\n        \"body\": {\n            \"userId\": \"1\",\n            \"listingOf\": \"closed\"\n        }\n    },\n    \"botaoCancelar\": {\n        \"texto\": \"Voltar\",\n        \"url\": \"http://localhost:8080/ui/poll/listing/closed\",\n        \"body\": {\n            \"userId\": \"1\",\n            \"listingOf\": \"closed\"\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "GetPollVoteForm",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": \"1\",\n    \"pollId\": \"2\",\n    \"listingOf\": \"openPoll\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/ui/poll/vote",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"ui",
+						"poll",
+						"vote"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "GetPollVoteForm",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": \"1\",\n    \"pollId\": \"5\",\n    \"listingOf\": \"openPoll\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/ui/poll/vote",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"ui",
+								"poll",
+								"vote"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 20 Jan 2023 01:18:47 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"titulo\": \"Vote iniciativa \\\"Quinta proposta\\\"\",\n    \"itens\": [\n        {\n            \"texto\": \"Sim\",\n            \"url\": \"http://localhost:8080/poll/vote\",\n            \"body\": {\n                \"userId\": \"1\",\n                \"pollId\": \"5\",\n                \"listingOf\": \"openPoll\",\n                \"accept\": \"true\"\n            }\n        },\n        {\n            \"texto\": \"Não\",\n            \"url\": \"http://localhost:8080/poll/vote\",\n            \"body\": {\n                \"userId\": \"1\",\n                \"pollId\": \"5\",\n                \"listingOf\": \"openPoll\",\n                \"accept\": \"false\"\n            }\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "GetPollResults",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// const body = pm.response.json()",
+							"// const userId =body.itens[2].body.idt_user",
+							"// pm.environment.set(\"userId\", userId)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": \"1\",\n    \"pollId\": \"3\",\n    \"listingOf\": \"closed\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/ui/poll/results",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"ui",
+						"poll",
+						"results"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "GetPollResults - OpenPoll",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"pollId\": \"4\",\n    \"listingOf\": \"open\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/ui/poll/results",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"ui",
+								"poll",
+								"results"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 20 Jan 2023 01:20:29 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"titulo\": \"Eita! Algo saiu errado\",\n    \"itens\": [\n        {\n            \"tipo\": \"TEXT\",\n            \"texto\": \"Pedimos desculpa, alguma coisa saiu errado\"\n        }\n    ],\n    \"botaoOk\": {\n        \"texto\": \"Voltar ao inicio\",\n        \"url\": \"http://localhost:8080/ui/poll-gateway\",\n        \"body\": {}\n    }\n}"
+				},
+				{
+					"name": "GetPollResults",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": \"1\",\n    \"pollId\": \"3\",\n    \"listingOf\": \"closed\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/ui/poll/results",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"ui",
+								"poll",
+								"results"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 21 Jan 2023 23:16:42 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"titulo\": \"Resultados de \\\"Terceira proposta\\\" \",\n    \"itens\": [\n        {\n            \"tipo\": \"TEXT\",\n            \"texto\": \"Total de votos: 4\"\n        },\n        {\n            \"tipo\": \"TEXT\",\n            \"texto\": \"Votos a favor: 2\"\n        },\n        {\n            \"tipo\": \"TEXT\",\n            \"texto\": \"Votos contra: 2\"\n        }\n    ],\n    \"botaoOk\": {\n        \"texto\": \"Voltar\",\n        \"url\": \"http://localhost:8080/ui/polls/listing\",\n        \"body\": {\n            \"userId\": \"1\"\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "PostNewPoll",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// const body = pm.response.json()",
+							"// const userId =body.itens[2].body.idt_user",
+							"// pm.environment.set(\"userId\", userId)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": 1,\n    \"idtTitle\": \"Sexta Proposta\",\n    \"idtDescription\": \"comer abacate\",\n    \"newPoll\": \"true\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/polls",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"polls"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "PostNewPoll",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": 1,\n    \"idtTitle\": \"Sexta Proposta\",\n    \"idtDescription\": \"comer abacate\",\n    \"newPoll\": \"true\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/polls",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"polls"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 21 Jan 2023 12:12:51 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"titulo\": \"Iniciativa recebida\",\n    \"botaoOk\": {\n        \"texto\": \"Voltar ao início\",\n        \"url\": \"http://localhost:8080/ui/poll-gateway\",\n        \"body\": {\n            \"userId\": \"1\"\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "CastVote",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// const body = pm.response.json()",
+							"// const userId =body.itens[2].body.idt_user",
+							"// pm.environment.set(\"userId\", userId)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": \"1\",\n    \"pollId\": \"5\",\n    \"listingOf\": \"openPolls\",\n    \"accept\": \"true\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/polls/vote",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"polls",
+						"vote"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "CastVote - poll still closed",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": \"1\",\n    \"pollId\": \"1\",\n    \"listingOf\": \"openPolls\",\n    \"accept\": \"true\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/polls/vote",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"polls",
+								"vote"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 21 Jan 2023 23:12:14 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"titulo\": \"Eita! Algo saiu errado\",\n    \"itens\": [\n        {\n            \"tipo\": \"TEXT\",\n            \"texto\": \"Pedimos desculpa, alguma coisa saiu errado\"\n        }\n    ],\n    \"botaoOk\": {\n        \"texto\": \"Voltar ao inicio\",\n        \"url\": \"http://localhost:8080/ui/poll-gateway\",\n        \"body\": {\n            \"userId\": \"1\"\n        }\n    }\n}"
+				},
+				{
+					"name": "CastVote",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": \"1\",\n    \"pollId\": \"2\",\n    \"listingOf\": \"openPolls\",\n    \"accept\": \"true\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/polls/vote",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"polls",
+								"vote"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 21 Jan 2023 23:12:35 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"titulo\": \"Eita! Algo saiu errado\",\n    \"itens\": [\n        {\n            \"tipo\": \"TEXT\",\n            \"texto\": \"Pedimos desculpa, alguma coisa saiu errado\"\n        }\n    ],\n    \"botaoOk\": {\n        \"texto\": \"Voltar ao inicio\",\n        \"url\": \"http://localhost:8080/ui/poll-gateway\",\n        \"body\": {\n            \"userId\": \"1\"\n        }\n    }\n}"
+				},
+				{
+					"name": "CastVote - success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": \"1\",\n    \"pollId\": \"5\",\n    \"listingOf\": \"openPolls\",\n    \"accept\": \"true\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/polls/vote",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"polls",
+								"vote"
+							]
+						}
+					},
+					"status": "Accepted",
+					"code": 202,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 21 Jan 2023 23:13:12 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"titulo\": \"Obrigado pelo seu voto\",\n    \"botaoOk\": {\n        \"texto\": \"Voltar ao início\",\n        \"url\": \"http://localhost:8080/ui/poll-gateway\",\n        \"body\": {\n            \"userId\": \"1\"\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "PostOpenPoll",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// const body = pm.response.json()",
+							"// const userId =body.itens[2].body.idt_user",
+							"// pm.environment.set(\"userId\", userId)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": \"1\",\n    \"pollId\": \"1\",\n    \"pollOpen\": \"true\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/polls/open",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"polls",
+						"open"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "PostOpenPoll - already open",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": \"1\",\n    \"pollId\": \"2\",\n    \"pollOpen\": \"true\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/polls/open",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"polls",
+								"open"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 20 Jan 2023 02:15:48 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"titulo\": \"Eita! Algo saiu errado\",\n    \"itens\": [\n        {\n            \"tipo\": \"TEXT\",\n            \"texto\": \"Pedimos desculpa, alguma coisa saiu errado\"\n        }\n    ],\n    \"botaoOk\": {\n        \"texto\": \"Voltar ao inicio\",\n        \"url\": \"http://localhost:8080/ui/poll-gateway\",\n        \"body\": {\n            \"userId\": \"1\"\n        }\n    }\n}"
+				},
+				{
+					"name": "PostOpenPoll - user does not own poll",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": \"2\",\n    \"pollId\": \"2\",\n    \"pollOpen\": \"true\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/polls/open",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"polls",
+								"open"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 20 Jan 2023 02:16:25 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"titulo\": \"Eita! Algo saiu errado\",\n    \"itens\": [\n        {\n            \"tipo\": \"TEXT\",\n            \"texto\": \"Pedimos desculpa, alguma coisa saiu errado\"\n        }\n    ],\n    \"botaoOk\": {\n        \"texto\": \"Voltar ao inicio\",\n        \"url\": \"http://localhost:8080/ui/poll-gateway\",\n        \"body\": {\n            \"userId\": \"2\"\n        }\n    }\n}"
+				},
+				{
+					"name": "PostOpenPoll - success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": \"1\",\n    \"pollId\": \"1\",\n    \"pollOpen\": \"true\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/polls/open",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"polls",
+								"open"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 20 Jan 2023 02:17:17 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"titulo\": \"Votação aberta\",\n    \"botaoOk\": {\n        \"texto\": \"Voltar ao início\",\n        \"url\": \"http://localhost:8080/ui/poll-gateway\",\n        \"body\": {\n            \"userId\": \"1\"\n        }\n    }\n}"
+				}
+			]
+		}
+	]
+}
