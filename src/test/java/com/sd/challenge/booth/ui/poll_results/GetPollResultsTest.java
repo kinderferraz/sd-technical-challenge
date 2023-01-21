@@ -5,7 +5,7 @@ import com.sd.challenge.booth.data.repositories.PollRepository;
 import com.sd.challenge.booth.resources.Screens.PollResultsForm;
 import com.sd.challenge.booth.resources.exception.handler.PollExceptionHandler;
 import com.sd.challenge.booth.resources.widgets.Form;
-import com.sd.challenge.booth.ui.UiMvcTest;
+import com.sd.challenge.booth.ui.MvcTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -14,7 +14,7 @@ import java.util.Map;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class GetPollResultsTest extends UiMvcTest {
+public class GetPollResultsTest extends MvcTest {
 
     @Autowired
     PollRepository pollRepository;

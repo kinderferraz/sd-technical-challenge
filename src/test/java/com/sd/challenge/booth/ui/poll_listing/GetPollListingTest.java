@@ -6,7 +6,7 @@ import com.sd.challenge.booth.resources.Screens.ListingSelection;
 import com.sd.challenge.booth.resources.exception.handler.PollExceptionHandler;
 import com.sd.challenge.booth.resources.widgets.Form;
 import com.sd.challenge.booth.resources.widgets.Selection;
-import com.sd.challenge.booth.ui.UiMvcTest;
+import com.sd.challenge.booth.ui.MvcTest;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -20,7 +20,7 @@ import java.util.stream.Stream;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class GetPollListingTest extends UiMvcTest {
+public class GetPollListingTest extends MvcTest {
 
     @Autowired
     PollRepository repository;

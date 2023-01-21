@@ -2,7 +2,7 @@ package com.sd.challenge.booth.ui.poll_gateway;
 
 import com.sd.challenge.booth.resources.Screens.PollGatewaySelection;
 import com.sd.challenge.booth.resources.widgets.Selection;
-import com.sd.challenge.booth.ui.UiMvcTest;
+import com.sd.challenge.booth.ui.MvcTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
@@ -10,7 +10,7 @@ import java.util.Map;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class GetPollGatewayTest extends UiMvcTest {
+public class GetPollGatewayTest extends MvcTest {
 
     @Test
     void getPollGatewayTest() throws Exception {

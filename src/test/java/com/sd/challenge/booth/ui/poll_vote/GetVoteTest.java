@@ -7,7 +7,7 @@ import com.sd.challenge.booth.resources.Screens.VoteSelection;
 import com.sd.challenge.booth.resources.exception.handler.PollExceptionHandler;
 import com.sd.challenge.booth.resources.widgets.Form;
 import com.sd.challenge.booth.resources.widgets.Selection;
-import com.sd.challenge.booth.ui.UiMvcTest;
+import com.sd.challenge.booth.ui.MvcTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -21,7 +21,7 @@ import java.util.stream.Stream;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class GetVoteTest extends UiMvcTest {
+public class GetVoteTest extends MvcTest {
 
     @Autowired
     PollRepository pollRepository;

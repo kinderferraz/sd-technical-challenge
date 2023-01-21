@@ -2,7 +2,7 @@ package com.sd.challenge.booth.ui.new_poll_form;
 
 import com.sd.challenge.booth.resources.Screens.NewPollForm;
 import com.sd.challenge.booth.resources.widgets.Form;
-import com.sd.challenge.booth.ui.UiMvcTest;
+import com.sd.challenge.booth.ui.MvcTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -12,7 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-public class GetNewPollTest extends UiMvcTest {
+public class GetNewPollTest extends MvcTest {
 
     @Test
     void getNewPollForUserTest() throws Exception {
