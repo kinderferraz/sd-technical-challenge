@@ -8,6 +8,7 @@ import com.sd.challenge.booth.resources.widgets.Form;
 import com.sd.challenge.booth.services.ui.UIType;
 
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,10 +20,13 @@ public class PollDetailsForm {
                     .message("M=yetToOpenForm poll accessed by another user")
                     .build();
 
+        Map<String, String> openData = new HashMap<>(data);
+        openData.put("openPoll", "true");
+
         Element buttonOpen = Element.builder()
                 .texto("Abrir para votação")
                 .url(baseUrl + "/polls/open")
-                .body(data)
+                .body(openData)
                 .build();
 
         Element description = Element.builder()

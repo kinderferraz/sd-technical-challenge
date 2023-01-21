@@ -15,7 +15,7 @@ public class AcceptedForm {
     public static Form get(String baseUrl, Map<String, String> data) {
         String voteTitle = data.get("accept") != null ? "Obrigado pelo seu voto" : null;
         String newPollTitle = data.get("newPoll") != null ? "Iniciativa recebida" : null;
-        String openPollTitle = data.get("pollOpen") != null ? "Votação aberta" : null;
+        String openPollTitle = data.get("openPoll") != null ? "Votação aberta" : null;
 
         String userId = data.get("userId");
         String finalTitle = chooseTitle(voteTitle, newPollTitle, openPollTitle, userId);
