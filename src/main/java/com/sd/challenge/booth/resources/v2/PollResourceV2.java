@@ -15,7 +15,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping(value = "/polls", produces = "application/json+vndV2")
-public class PollResource {
+public class PollResourceV2 {
 
 
     PollService pollService;
@@ -23,7 +23,7 @@ public class PollResource {
     UiService uiService;
 
     @Autowired
-    PollResource(
+    PollResourceV2(
             PollService pollService,
             UiService uiService
     ) {
