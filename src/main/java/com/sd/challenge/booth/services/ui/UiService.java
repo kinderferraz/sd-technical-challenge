@@ -97,30 +97,34 @@ public class UiService {
 
         String origin = data.get("listingOf");
 
-        if (origin.equals("user"))
-            return getYetToOpenPollDetails(userId, poll, baseUrl, data);
+        if (origin.equals("user") && ! poll.getOwner().getId().equals(userId))
+            throw makeException("M=getPollDetails user trying to view unopened " +
+                    "poll from someone else userId=" + userId, data);
 
-        if (origin.equals("closed"))
-            return getClosedPollDetails(userId, poll, baseUrl, data);
+        if(origin.equals("user") && poll.getOpenedAt() == null)
+            return PollDetailsForm.yetToOpenForm(userId, poll, baseUrl, data);
 
+        if(origin.equals("closed"))
+            return getClosedPollDetails(poll, userId, pollId, data);
+
+        if (!pollIsOpen(poll))
+            throw makeException("M=getPollDetails poll is still open userId=" + userId + " pollId=" + pollId, data);
 
         Boolean userMayVote = userService.userMayVote(userId);
         UserVote vote = userVoteRepostory.findUserVoteByPollAndVoter(pollId, userId);
         return PollDetailsForm.getOpenPollDetails(userId, poll, baseUrl, data, vote, userMayVote);
     }
 
-    private Form getYetToOpenPollDetails(Long userId, Poll poll, String baseUrl, Map<String, String> data) {
-        if (poll.getOpenedAt() != null)
-            throw makeException("M=getYetToOpenPollDetails poll not yet open userId="
-                    + userId + " pollId=" + poll.getId(), data);
-        return PollDetailsForm.yetToOpenForm(userId, poll, baseUrl, data);
+    private Form getClosedPollDetails(Poll poll, Long userId, Long pollId, Map<String, String> data){
+        if (pollIsOpen(poll))
+            throw makeException("M=getPollDetails poll not yet closed userId="
+                    + userId + " pollId=" + pollId, data);
+        return PollDetailsForm.getClosedPollDetails(poll, baseUrl, data);
+
     }
 
-    private Form getClosedPollDetails(Long userId, Poll poll, String baseUrl, Map<String, String> data) {
-        if (poll.getEndsAt() == null || poll.getEndsAt().isAfter(LocalDateTime.now()))
-            throw makeException("M=getClosedPollDetails poll not yet closed userId="
-                    + userId + " pollId=" + poll.getId(), data);
-        return PollDetailsForm.getClosedPollDetails(poll, baseUrl, data);
+    private boolean pollIsOpen(Poll poll) {
+        return poll.getEndsAt() == null || poll.getEndsAt().isAfter(LocalDateTime.now());
     }
 
     public Form getPollResults(Map<String, String> data) {

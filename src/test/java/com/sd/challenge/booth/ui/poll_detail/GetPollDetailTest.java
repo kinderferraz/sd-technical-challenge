@@ -88,7 +88,7 @@ public class GetPollDetailTest extends MvcTest {
         return Stream.of(
                 Arguments.of("View closed poll", "1", "3", true),
                 Arguments.of("View open poll", "1", "2", false),
-                Arguments.of("View not yet open poll", "1", "1", false),
+                Arguments.of("View not yet open poll", "2", "1", false),
                 Arguments.of("User view poll that does not exist", "1", "10", false)
         );
     }
@@ -118,7 +118,6 @@ public class GetPollDetailTest extends MvcTest {
     public static Stream<Arguments> getYetToOpenPollDetailsTestArguments() {
         return Stream.of(
                 Arguments.of("User views yet to open poll", "1", "1", true),
-                Arguments.of("User views already open poll", "1", "2", false),
                 Arguments.of("User views another user's poll", "1", "4", false)
         );
     }
