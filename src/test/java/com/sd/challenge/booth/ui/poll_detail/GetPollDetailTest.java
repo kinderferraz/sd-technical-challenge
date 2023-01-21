@@ -21,7 +21,6 @@ import org.springframework.test.web.servlet.ResultMatcher;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 import static org.mockito.ArgumentMatchers.anyString;
@@ -74,7 +73,7 @@ public class GetPollDetailTest extends MvcTest {
         else
             response.setStatus("UNABLE_TO_VOTE");
 
-        doReturn(Optional.of(response)).when(cpfClient).getUserMayVote(anyString());
+        doReturn(response).when(cpfClient).getUserMayVote(anyString());
 
         Poll poll = pollRepository.findById(Long.valueOf(pollId)).orElseThrow();
         UserVote vote = userVoteRepository.findUserVoteByPollAndVoter(Long.valueOf(pollId), Long.valueOf(userId));
