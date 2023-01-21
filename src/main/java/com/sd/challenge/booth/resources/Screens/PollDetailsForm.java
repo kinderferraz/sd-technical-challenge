@@ -23,6 +23,12 @@ public class PollDetailsForm {
         Map<String, String> openData = new HashMap<>(data);
         openData.put("openPoll", "true");
 
+        Element closesAtInput = Element.builder()
+                .tipo(UIType.DATE_INPUT)
+                .id("idt_closes_at")
+                .titulo("Iniciativa aberta até: ")
+                .build();
+
         Element buttonOpen = Element.builder()
                 .texto("Abrir para votação")
                 .url(baseUrl + "/polls/open")
@@ -47,7 +53,7 @@ public class PollDetailsForm {
 
         return Form.builder()
                 .titulo(poll.getTitle())
-                .itens(List.of(description, createdAt, status))
+                .itens(List.of(description, createdAt, closesAtInput, status))
                 .botaoCancelar(getBackButton(baseUrl, "user", data))
                 .botaoOk(buttonOpen)
                 .build();
