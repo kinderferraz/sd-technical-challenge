@@ -28,9 +28,10 @@ public class GetVoteTest extends MvcTest {
 
     public static Stream<Arguments> getErrorVoteFormArguments() {
         return Stream.of(
-                Arguments.of("Vote on poll not yet open", "1"),
+                Arguments.of("Vote on poll not yet open", "6"),
                 Arguments.of("Vote on closed poll", "3"),
-                Arguments.of("Vote on own poll", "2")
+                Arguments.of("Vote on own poll", "2"),
+                Arguments.of("Vote on nonexistent poll", "11")
         );
     }
 
