@@ -48,7 +48,8 @@ public class GetPollDetailTest extends MvcTest {
                 Arguments.of("User may vote on open poll", "1", "5", true),
                 Arguments.of("User may not vote on open poll", "7", "5", false),
                 Arguments.of("User already voted on open poll", "1", "4", true),
-                Arguments.of("User owns on open poll", "1", "2", true)
+                Arguments.of("User owns on open poll", "1", "2", true),
+                Arguments.of("User with no cpf", "11", "2", false)
         );
     }
 
@@ -88,7 +89,8 @@ public class GetPollDetailTest extends MvcTest {
         return Stream.of(
                 Arguments.of("View closed poll", "1", "3", true),
                 Arguments.of("View open poll", "1", "2", false),
-                Arguments.of("View not yet open poll", "1", "1", false)
+                Arguments.of("View not yet open poll", "1", "1", false),
+                Arguments.of("User view poll that does not exist", "1", "10", false)
         );
     }
 
@@ -105,9 +107,9 @@ public class GetPollDetailTest extends MvcTest {
 
         ResultMatcher status = success ? status().isOk() : status().is5xxServerError();
 
-        Poll poll = pollRepository.findById(Long.parseLong(pollId)).orElseThrow();
+        Poll poll = pollRepository.findById(Long.parseLong(pollId)).orElse(null);
 
-        Form result = success
+        Form result = (success && poll != null)
                 ? PollDetailsForm.getClosedPollDetails(poll, baseUrl, responseData)
                 : PollExceptionHandler.errorForm(baseUrl, Map.of("userId", userId));
 
