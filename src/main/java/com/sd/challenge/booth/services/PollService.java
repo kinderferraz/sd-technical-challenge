@@ -41,6 +41,9 @@ public class PollService {
         Long userId = Long.valueOf(data.get("userId"));
         User owner = getUser(userId, "M=savePoll");
 
+        if (data.get("newPoll") == null)
+            throw makeGatewayException("M=savePoll", userId, null);
+
         String title = data.get("idtTitle");
         String description = data.get("idtDescription");
 
@@ -58,10 +61,14 @@ public class PollService {
     }
 
     public void castVote(Map<String, String> data) {
-        boolean voteValue = Boolean.parseBoolean(data.get("accept"));
-
+        String voteValueStr = data.get("accept");
         Long pollId = Long.valueOf(data.get("pollId"));
         Long userId = Long.valueOf(data.get("userId"));
+
+        if (voteValueStr == null)
+            throw makeGatewayException("M=castVote", userId, pollId);
+
+        boolean voteValue = Boolean.parseBoolean(voteValueStr);
 
         Poll poll = getPoll(pollId, "M=castVote", userId);
         if (poll.getOwner().getId().equals(userId))
@@ -100,6 +107,9 @@ public class PollService {
     public void openPoll(Map<String, String> data) {
         Long pollId = Long.valueOf(data.get("pollId"));
         Long userId = Long.valueOf(data.get("userId"));
+
+        if (data.get("openPoll") == null)
+            throw makeGatewayException("M=openPoll", userId, pollId);
 
         Poll poll = getPoll(pollId, "M=openPoll", userId);
 
@@ -148,6 +158,10 @@ public class PollService {
                 .message(MessageFormat.format(message, userId, pollId))
                 .data(Map.of("userId", String.valueOf(userId)))
                 .build();
+    }
+
+    private PollException makeGatewayException(String method, Long userId, Long pollId){
+        return makeException(method + "gateway error userId={0} pollId={1}", userId, pollId);
     }
 
 }

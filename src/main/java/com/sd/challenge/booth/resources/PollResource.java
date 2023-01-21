@@ -49,6 +49,7 @@ public class PollResource {
             @RequestBody Map<String, String> data
     ) {
         log.info("M=postNewPoll data={}", data);
+
         pollService.openPoll(data);
         return ResponseEntity.ok(uiService.getAcceptedForm(data));
     }
@@ -58,6 +59,7 @@ public class PollResource {
             @RequestBody Map<String, String> data
     ) {
         log.info("M=postNewPoll data={}", data);
+
         pollService.castVote(data);
         return ResponseEntity.status(HttpStatus.ACCEPTED)
                 .body(uiService.getAcceptedForm(data));
