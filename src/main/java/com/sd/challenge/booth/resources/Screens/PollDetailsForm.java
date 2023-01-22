@@ -2,7 +2,6 @@ package com.sd.challenge.booth.resources.Screens;
 
 import com.sd.challenge.booth.data.entities.Poll;
 import com.sd.challenge.booth.data.entities.UserVote;
-import com.sd.challenge.booth.resources.exception.PollException;
 import com.sd.challenge.booth.resources.widgets.Element;
 import com.sd.challenge.booth.resources.widgets.Form;
 import com.sd.challenge.booth.services.ui.UIType;
@@ -14,13 +13,7 @@ import java.util.Map;
 
 public class PollDetailsForm {
 
-    public static Form yetToOpenForm(Long userId, Poll poll, String baseUrl, Map<String, String> data) {
-        if (!poll.getOwner().getId().equals(userId))
-            throw PollException.builder()
-                    .message("M=yetToOpenForm poll accessed by another user")
-                    .data(data)
-                    .build();
-
+    public static Form yetToOpenForm(Poll poll, String baseUrl, Map<String, String> data) {
         Map<String, String> openData = new HashMap<>(data);
         openData.put("openPoll", "true");
 
@@ -55,7 +48,7 @@ public class PollDetailsForm {
         return Form.builder()
                 .titulo(poll.getTitle())
                 .itens(List.of(description, createdAt, closesAtInput, status))
-                .botaoCancelar(getBackButton(baseUrl, "user", data))
+                .botaoCancelar(getBackButton(baseUrl, data.get("listingOf"), data))
                 .botaoOk(buttonOpen)
                 .build();
     }

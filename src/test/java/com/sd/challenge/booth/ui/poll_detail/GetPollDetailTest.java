@@ -118,7 +118,8 @@ public class GetPollDetailTest extends MvcTest {
     public static Stream<Arguments> getYetToOpenPollDetailsTestArguments() {
         return Stream.of(
                 Arguments.of("User views yet to open poll", "1", "1", true),
-                Arguments.of("User views another user's poll", "1", "4", false)
+                Arguments.of("User views another user's yet to open poll", "1", "6", false),
+                Arguments.of("User views another user's yet open poll", "1", "6", false)
         );
     }
 
@@ -138,7 +139,7 @@ public class GetPollDetailTest extends MvcTest {
         Poll poll = pollRepository.findById(Long.parseLong(pollId)).orElseThrow();
 
         Form result = success
-                ? PollDetailsForm.yetToOpenForm(Long.parseLong(userId), poll, baseUrl, responseData)
+                ? PollDetailsForm.yetToOpenForm(poll, baseUrl, responseData)
                 : PollExceptionHandler.errorForm(baseUrl, Map.of("userId", userId));
 
         performPostRequest(endpoint, postData, status, content().json(gson.toJson(result)));
