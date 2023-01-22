@@ -2,7 +2,6 @@ package com.sd.challenge.booth.services.ui;
 
 import com.sd.challenge.booth.data.entities.Poll;
 import com.sd.challenge.booth.data.entities.User;
-import com.sd.challenge.booth.data.entities.UserVote;
 import com.sd.challenge.booth.data.repositories.PollRepository;
 import com.sd.challenge.booth.data.repositories.UserRepository;
 import com.sd.challenge.booth.data.repositories.UserVoteRepository;
@@ -10,7 +9,6 @@ import com.sd.challenge.booth.resources.Screens.*;
 import com.sd.challenge.booth.resources.exception.PollException;
 import com.sd.challenge.booth.resources.widgets.Form;
 import com.sd.challenge.booth.resources.widgets.Selection;
-import com.sd.challenge.booth.services.integration.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,21 +29,21 @@ public class UiService {
 
     UserRepository userRepository;
 
-    UserVoteRepository userVoteRepostory;
+    UserVoteRepository userVoteRepository;
 
-    UserService userService;
+    PollDetailsService pollDetailsService;
 
     @Autowired
     public UiService(
-            UserService userService,
             UserRepository userRepository,
             PollRepository pollRepository,
-            UserVoteRepository userVoteRepository
+            UserVoteRepository userVoteRepository,
+            PollDetailsService pollDetailsService
     ) {
-        this.userService = userService;
-        this.userVoteRepostory = userVoteRepository;
+        this.userVoteRepository = userVoteRepository;
         this.userRepository = userRepository;
         this.pollRepository = pollRepository;
+        this.pollDetailsService = pollDetailsService;
     }
 
     private final String pollErrorCause = " error getting poll";
@@ -89,42 +87,7 @@ public class UiService {
     }
 
     public Form getPollDetails(Map<String, String> data) {
-        Long userId = Long.valueOf(data.get("userId"));
-        Long pollId = Long.valueOf(data.get("pollId"));
-
-        Poll poll = pollRepository.findById(pollId)
-                .orElseThrow(() -> makeException("M=getPollDetails" + pollErrorCause, data));
-
-        String origin = data.get("listingOf");
-
-        if (origin.equals("user") && ! poll.getOwner().getId().equals(userId))
-            throw makeException("M=getPollDetails user trying to view unopened " +
-                    "poll from someone else userId=" + userId, data);
-
-        if(origin.equals("user") && poll.getOpenedAt() == null)
-            return PollDetailsForm.yetToOpenForm(userId, poll, baseUrl, data);
-
-        if(origin.equals("closed"))
-            return getClosedPollDetails(poll, userId, pollId, data);
-
-        if (!pollIsOpen(poll))
-            throw makeException("M=getPollDetails poll is still open userId=" + userId + " pollId=" + pollId, data);
-
-        Boolean userMayVote = userService.userMayVote(userId);
-        UserVote vote = userVoteRepostory.findUserVoteByPollAndVoter(pollId, userId);
-        return PollDetailsForm.getOpenPollDetails(userId, poll, baseUrl, data, vote, userMayVote);
-    }
-
-    private Form getClosedPollDetails(Poll poll, Long userId, Long pollId, Map<String, String> data){
-        if (pollIsOpen(poll))
-            throw makeException("M=getPollDetails poll not yet closed userId="
-                    + userId + " pollId=" + pollId, data);
-        return PollDetailsForm.getClosedPollDetails(poll, baseUrl, data);
-
-    }
-
-    private boolean pollIsOpen(Poll poll) {
-        return poll.getEndsAt() == null || poll.getEndsAt().isAfter(LocalDateTime.now());
+        return pollDetailsService.getPollDetails(data);
     }
 
     public Form getPollResults(Map<String, String> data) {
