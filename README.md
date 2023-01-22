@@ -13,6 +13,15 @@ baseadas tanto na descrição pedida quanto na interpretação das mensagens pad
 - Apenas o usuario que criou uma pauta pode vê-la antes de abrí-la para votação;
 - Uma vez aberta, o usuário que a criou não pode votar;
 - Enquanto a votação estiver aberta, o resultado não pode ser visto;
+- As seguintes regras foram impelementadass para validar o acesso aos detalhes de uma
+  pauta:
+  - um usuário pediu para ver seu historico de pautas, e tem acesso as que ainda 
+    não foram abertas, às abertas e às fechadas,
+  - um usuário pede a lista de pautas abertas, não pode ter acesso a uma pauta que 
+    já esteja fechada,
+  - um usuário pede a lista de pautas fechadas, não pode acessar pautas abertas,
+  - qualquer outro meio de acessar uma pauta, com inconsistencia nos dados da requisição 
+    será entendido como um acesso indevido, e terá uma exceção.
 - O usuário define o dia de fechamento da votação, e se não for enviado um valor, 
   a votação fica aberta por apenas um minuto.
 
@@ -30,7 +39,8 @@ início do programa um arqvivo deve ser criado como path `./db/demo.mv.db`.
 
 Entretanto, recomendo deletar este arquivo ou renomear o arquivo [data.sql](./src/main/resources/data.sql),
 pois uma das colunas do banco possui uma `unique constraint`, de modo que um restart do programa 
-irá ser mal sucedido.
+irá ser mal sucedido. Vale notar também que o arquivo precisa existir para que os testes sejam 
+executados com suceso.
 
 ## Documentação
 Mais detalhes sobre o processo de implementação 
