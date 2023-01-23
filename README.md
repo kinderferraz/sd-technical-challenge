@@ -37,9 +37,10 @@ ou configurar o profile `local` no Intellij. Foi usada a biblioteca H2 para inst
 um banco para os testes e execução em ambiente de desenvolvimento, e no momento de 
 início do programa um arqvivo deve ser criado como path `./db/demo.mv.db`.
 
-Entretanto, recomendo deletar este arquivo ou renomear o arquivo [data.sql](./src/main/resources/data.sql),
-pois uma das colunas do banco possui uma `unique constraint`, de modo que um restart do programa 
-irá ser mal sucedido. Vale notar também que o arquivo precisa existir para que os testes sejam 
+Entretanto, recomendo deletar este arquivo auto gerado ou renomear o arquivo 
+[data.sql](./src/main/resources/data.sql), pois uma das colunas do banco possui
+uma `unique constraint`, de modo que um restart do programa irá ser mal sucedido.
+Vale notar também que o arquivo `data.sql` precisa existir para que os testes sejam 
 executados com suceso.
 
 ## Documentação
